@@ -1,6 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Estudos.NSE.WebApp.MVC.Models;
 using Estudos.NSE.WebApp.MVC.Services;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Estudos.NSE.WebApp.MVC.Controllers
@@ -27,8 +33,8 @@ namespace Estudos.NSE.WebApp.MVC.Controllers
         {
             if (!ModelState.IsValid) return View(usuarioRegistro);
 
-            var retorno = await _autenticacaoService.Registro(usuarioRegistro);
-
+            var resposta = await _autenticacaoService.Registro(usuarioRegistro);
+            await RealizarLogin(resposta);
             return RedirectToAction("Index", "Home");
         }
 
@@ -45,8 +51,9 @@ namespace Estudos.NSE.WebApp.MVC.Controllers
         {
             if (!ModelState.IsValid) return View(usuarioLogin);
 
-            var retorno = await _autenticacaoService.Login(usuarioLogin);
-            return LocalRedirect(returnUrl);
+            var resposta = await _autenticacaoService.Login(usuarioLogin);
+            await RealizarLogin(resposta);
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -55,6 +62,37 @@ namespace Estudos.NSE.WebApp.MVC.Controllers
         {
             return RedirectToAction("Index", "Home");
         }
+
+
+        #region privates
+
+        private async Task RealizarLogin(UsuarioRespostaLogin resposta)
+        {
+            var token = ObterTokenFormatado(resposta.AccessToken);
+            var claims = new List<Claim> { new Claim("JWT", resposta.AccessToken) };
+            claims.AddRange(token.Claims);
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var authProperties = new AuthenticationProperties
+            {
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(resposta.ExpiresIn),
+                IsPersistent = true //vai durar vários requests
+            };
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties);
+
+        }
+
+        private static JwtSecurityToken ObterTokenFormatado(string jwtToken)
+        {
+            return new JwtSecurityTokenHandler().ReadToken(jwtToken) as JwtSecurityToken;
+        }
+
+        #endregion
 
     }
 }
