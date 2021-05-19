@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Estudos.NSE.WebApp.MVC.Models;
@@ -18,11 +14,13 @@ namespace Estudos.NSE.WebApp.MVC.Controllers
             _logger = logger;
         }
 
+        [Route("/")]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Route("privacidade")]
         public IActionResult Privacy()
         {
             return View();
