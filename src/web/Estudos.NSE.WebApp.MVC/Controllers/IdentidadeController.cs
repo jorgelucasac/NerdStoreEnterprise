@@ -1,11 +1,18 @@
 ﻿using System.Threading.Tasks;
 using Estudos.NSE.WebApp.MVC.Models;
+using Estudos.NSE.WebApp.MVC.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Estudos.NSE.WebApp.MVC.Controllers
 {
     public class IdentidadeController : Controller
     {
+        private readonly IAutenticacaoService _autenticacaoService;
+
+        public IdentidadeController(IAutenticacaoService autenticacaoService)
+        {
+            _autenticacaoService = autenticacaoService;
+        }
 
         [HttpGet]
         [Route("nova-conta")]
@@ -20,7 +27,7 @@ namespace Estudos.NSE.WebApp.MVC.Controllers
         {
             if (!ModelState.IsValid) return View(usuarioRegistro);
 
-          
+            var retorno = await _autenticacaoService.Registro(usuarioRegistro);
 
             return RedirectToAction("Index", "Home");
         }
@@ -38,7 +45,7 @@ namespace Estudos.NSE.WebApp.MVC.Controllers
         {
             if (!ModelState.IsValid) return View(usuarioLogin);
 
-
+            var retorno = await _autenticacaoService.Login(usuarioLogin);
             return LocalRedirect(returnUrl);
         }
 
