@@ -43,6 +43,7 @@ namespace Estudos.NSE.Identidade.API
                     options.SignIn.RequireConfirmedPhoneNumber = false;
                 })
                 .AddRoles<IdentityRole>()
+                .AddErrorDescriber<IdentityMensagensPortugues>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
