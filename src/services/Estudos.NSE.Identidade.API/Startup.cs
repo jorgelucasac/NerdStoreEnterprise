@@ -1,5 +1,8 @@
 using System;
+using System.Text;
 using Estudos.NSE.Identidade.API.Data;
+using Estudos.NSE.Identidade.API.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -7,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace Estudos.NSE.Identidade.API
@@ -25,10 +29,57 @@ namespace Estudos.NSE.Identidade.API
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<IdentityUser>(options =>
+                {
+                    //senha
+                    options.Password.RequiredLength = 8;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireDigit = false;
+
+                    //confirmação de informãções
+                    options.SignIn.RequireConfirmedEmail = false;
+                    options.SignIn.RequireConfirmedPhoneNumber = false;
+                })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+
+
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(bearerOptions =>
+            {
+                bearerOptions.RequireHttpsMetadata = true;
+                bearerOptions.SaveToken = true;
+
+                //parametros de validação do token
+                bearerOptions.TokenValidationParameters = new TokenValidationParameters
+                {
+                    //validar a assinatura do token?
+                    ValidateIssuerSigningKey = true,
+                    //chave de criptografia
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    //validar o emisor?
+                    ValidateIssuer = true,
+                    //validar os dominios onde o token é válido?
+                    ValidateAudience = true,
+                    //seta o doimio onde o token é valido
+                    ValidAudience = appSettings.ValidoEm,
+                    //seta o emissor
+                    ValidIssuer = appSettings.Emissor
+                };
+            });
 
             services.AddControllers();
 
