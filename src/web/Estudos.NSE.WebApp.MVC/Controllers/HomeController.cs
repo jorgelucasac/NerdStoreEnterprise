@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Estudos.NSE.WebApp.MVC.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Estudos.NSE.WebApp.MVC.Controllers
 {
@@ -18,20 +14,46 @@ namespace Estudos.NSE.WebApp.MVC.Controllers
             _logger = logger;
         }
 
+        [Route("/")]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Route("privacidade")]
         public IActionResult Privacy()
         {
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [Route("erro/{id}")]
+        public IActionResult Error(int id)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var erro = new ErrorViewModel();
+            switch (id)
+            {
+                case StatusCodes.Status404NotFound:
+                    erro.Mensagem = "A página que você está procurando não existe. <br/>" +
+                                    "Em caso de dúvidas entre em contato com o suporte.";
+                    erro.Titulo = "Ops! Página não encontrada";
+                    erro.ErroCode = id;
+                    break;
+                case StatusCodes.Status403Forbidden:
+                    erro.Mensagem = "Você não tem permissão para fazer isso!";
+                    erro.Titulo = "Acesso Negado";
+                    erro.ErroCode = id;
+                    break;
+
+                case StatusCodes.Status500InternalServerError:
+                    erro.ErroCode = StatusCodes.Status500InternalServerError;
+                    erro.Titulo = "Ops! Erro Interno do Servidor!";
+                    erro.Mensagem = "Infelizmente, estamos com problemas para carregar a página que você está procurando. Volte daqui a pouco.";
+                    break;
+
+                default:
+                    return StatusCode(StatusCodes.Status404NotFound);
+            }
+            return View(erro);
         }
     }
 }
