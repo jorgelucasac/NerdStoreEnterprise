@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Estudos.NSE.WebApp.MVC.Extensions;
 using Estudos.NSE.WebApp.MVC.Models;
 using Estudos.NSE.WebApp.MVC.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -44,6 +45,7 @@ namespace Estudos.NSE.WebApp.MVC.Controllers
         [Route("login")]
         public IActionResult Login(string returnUrl = null)
         {
+            ViewData.SetReturnUrl(returnUrl);
             return View();
         }
 
@@ -51,12 +53,16 @@ namespace Estudos.NSE.WebApp.MVC.Controllers
         [Route("login")]
         public async Task<IActionResult> Login(UsuarioLogin usuarioLogin, string returnUrl = null)
         {
+            ViewData.SetReturnUrl(returnUrl);
             if (!ModelState.IsValid) return View(usuarioLogin);
 
             var resposta = await _autenticacaoService.Login(usuarioLogin);
             if (ResponsePossuiErros(resposta.ResponseResult)) return View(usuarioLogin);
 
             await RealizarLogin(resposta);
+
+            if (!string.IsNullOrEmpty(returnUrl)) return LocalRedirect(returnUrl);
+
             return RedirectToAction("Index", "Home");
         }
 

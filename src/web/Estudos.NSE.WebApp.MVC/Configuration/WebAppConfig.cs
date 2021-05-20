@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using Estudos.NSE.WebApp.MVC.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
@@ -35,6 +36,7 @@ namespace Estudos.NSE.WebApp.MVC.Configuration
 
             app.UseIdentityConfiguration();
 
+            app.UseMiddleware<ExceptionMiddleware>()
 
             app.UseEndpoints(endpoints =>
             {
