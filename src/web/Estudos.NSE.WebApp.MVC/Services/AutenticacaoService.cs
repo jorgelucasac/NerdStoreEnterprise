@@ -8,7 +8,7 @@ using Estudos.NSE.WebApp.MVC.Models;
 
 namespace Estudos.NSE.WebApp.MVC.Services
 {
-    public class AutenticacaoService : IAutenticacaoService
+    public class AutenticacaoService : Service, IAutenticacaoService
     {
         private readonly HttpClient _httpClient;
         private readonly JsonSerializerOptions _serializerOptions;
@@ -33,9 +33,17 @@ namespace Estudos.NSE.WebApp.MVC.Services
                 await _httpClient.PostAsync("https://localhost:44359/api/identidade/autenticar", loginContent);
 
             var conteudoResposta = await response.Content.ReadAsStringAsync();
+            if (!TratarErrosResponse(response))
+            {
+                return new UsuarioRespostaLogin
+                {
+                    ResponseResult =  JsonSerializer.Deserialize<ResponseResult>(conteudoResposta, _serializerOptions)
+                };
 
-            var retorno = JsonSerializer.Deserialize<UsuarioRespostaLogin>(conteudoResposta, _serializerOptions);
-            return retorno;
+            }
+            return JsonSerializer.Deserialize<UsuarioRespostaLogin>(conteudoResposta, _serializerOptions);
+
+          
         }
 
         public async Task<UsuarioRespostaLogin> Registro(UsuarioRegistro registro)
@@ -49,6 +57,15 @@ namespace Estudos.NSE.WebApp.MVC.Services
                 await _httpClient.PostAsync("https://localhost:44359/api/identidade/nova-conta", registroContent);
 
             var conteudoResposta = await response.Content.ReadAsStringAsync();
+
+            if (!TratarErrosResponse(response))
+            {
+                return new UsuarioRespostaLogin
+                {
+                    ResponseResult = JsonSerializer.Deserialize<ResponseResult>(conteudoResposta, _serializerOptions)
+                };
+
+            }
 
             var retorno = JsonSerializer.Deserialize<UsuarioRespostaLogin>(conteudoResposta, _serializerOptions);
             return retorno;
