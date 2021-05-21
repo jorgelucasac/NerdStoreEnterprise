@@ -13,6 +13,11 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="Data\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\building blocks\Estudos.NSE.Core\Estudos.NSE.Core.csproj" />
   </ItemGroup>
 
 
