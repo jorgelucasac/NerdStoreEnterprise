@@ -18,8 +18,10 @@ namespace Estudos.NSE.WebApi.Core.Identidade
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
+            //seta o tipo de altenticação 
             services.AddAuthentication(opt =>
             {
+                //informa que a autenticaçação é via token
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(bearerOptions =>

@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Estudos.NSE.Catalogo.API.Models;
+using Estudos.NSE.WebApi.Core.Identidade;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Estudos.NSE.Catalogo.API.Controllers
 {
     [ApiController]
+    [Authorize]
     public class CatalogoController : Controller
     {
         private readonly IProdutoRepository _produtoRepository;
@@ -25,6 +27,7 @@ namespace Estudos.NSE.Catalogo.API.Controllers
         }
 
         [HttpGet("catalogo/produtos/{id}")]
+        [ClaimsAuthorize("Catalogo", "Ler")]
         public async Task<Produto> ProdutoDetalhe(Guid id)
         {
             return await _produtoRepository.ObterPorId(id);
