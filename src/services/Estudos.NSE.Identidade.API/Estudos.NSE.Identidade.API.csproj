@@ -28,5 +28,10 @@
     <Folder Include="Models\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\building blocks\Estudos.NSE.WebApi.Core\Estudos.NSE.WebApi.Core.csproj" />
+    <ProjectReference Include="..\..\web\Estudos.NSE.WebApp.MVC\Estudos.NSE.WebApp.MVC.csproj" />
+  </ItemGroup>
+
 
 </Project>

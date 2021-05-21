@@ -13,35 +13,39 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{F5542CF9-DA9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identidade", "Identidade", "{EB9D3D98-4A6D-4413-A45D-9BDE78D73D05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estudos.NSE.Identidade.API", "src\services\Estudos.NSE.Identidade.API\Estudos.NSE.Identidade.API.csproj", "{63F01B86-0113-47E8-855B-235857BA7BD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Estudos.NSE.Identidade.API", "src\services\Estudos.NSE.Identidade.API\Estudos.NSE.Identidade.API.csproj", "{63F01B86-0113-47E8-855B-235857BA7BD0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MVC", "MVC", "{CA2A638A-1DC1-4D7B-9E68-C4A8FA011177}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estudos.NSE.WebApp.MVC", "src\web\Estudos.NSE.WebApp.MVC\Estudos.NSE.WebApp.MVC.csproj", "{C227C2F9-7415-4C6E-9E42-EACF2C33DF57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Estudos.NSE.WebApp.MVC", "src\web\Estudos.NSE.WebApp.MVC\Estudos.NSE.WebApp.MVC.csproj", "{C227C2F9-7415-4C6E-9E42-EACF2C33DF57}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{724EA4E6-3303-4AA4-B290-D1D8E8061B6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estudos.NSE.Core", "src\building blocks\Estudos.NSE.Core\Estudos.NSE.Core.csproj", "{8B7299E9-B580-4707-BC08-C3C777AB929F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Estudos.NSE.Core", "src\building blocks\Estudos.NSE.Core\Estudos.NSE.Core.csproj", "{8B7299E9-B580-4707-BC08-C3C777AB929F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Carrinho", "Carrinho", "{251AF58D-D550-48B5-ADB8-D784A0C913AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estudos.NSE.Carrinho.API", "src\services\Estudos.NSE.Carrinho.API\Estudos.NSE.Carrinho.API.csproj", "{ABE65D8F-BCAD-47CD-9272-0D7BFA023FAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Estudos.NSE.Carrinho.API", "src\services\Estudos.NSE.Carrinho.API\Estudos.NSE.Carrinho.API.csproj", "{ABE65D8F-BCAD-47CD-9272-0D7BFA023FAA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalogo", "Catalogo", "{0D7C516F-4B98-4E57-8B64-38A363615335}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estudos.NSE.Catalogo.API", "src\services\Estudos.NSE.Catalogo.API\Estudos.NSE.Catalogo.API.csproj", "{5074B2FF-7AFA-4464-A0D4-200ADA02D181}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Estudos.NSE.Catalogo.API", "src\services\Estudos.NSE.Catalogo.API\Estudos.NSE.Catalogo.API.csproj", "{5074B2FF-7AFA-4464-A0D4-200ADA02D181}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cliente", "Cliente", "{FAD388C2-2C76-40BA-853F-4EBF37CD57C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estudos.NSE.Cliente.API", "src\services\Estudos.NSE.Cliente.API\Estudos.NSE.Cliente.API.csproj", "{2C43D369-0580-424B-9DB0-69A739E02319}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Estudos.NSE.Cliente.API", "src\services\Estudos.NSE.Cliente.API\Estudos.NSE.Cliente.API.csproj", "{2C43D369-0580-424B-9DB0-69A739E02319}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pagamento", "Pagamento", "{B52DD9B3-C7C4-472C-938E-AA68C11662B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estudos.NSE.Pagamento.API", "src\services\Estudos.NSE.Pagamento.API\Estudos.NSE.Pagamento.API.csproj", "{FC8B9055-EC41-40F3-B61F-15339A86FCF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Estudos.NSE.Pagamento.API", "src\services\Estudos.NSE.Pagamento.API\Estudos.NSE.Pagamento.API.csproj", "{FC8B9055-EC41-40F3-B61F-15339A86FCF8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pedido", "Pedido", "{D539645C-54B1-40A2-8F5F-206FA8BB6169}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estudos.NSE.Pedido.API", "src\services\Estudos.NSE.Pedido.API\Estudos.NSE.Pedido.API.csproj", "{6652DC6A-BD1C-4E35-8A42-6877E002B6F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Estudos.NSE.Pedido.API", "src\services\Estudos.NSE.Pedido.API\Estudos.NSE.Pedido.API.csproj", "{6652DC6A-BD1C-4E35-8A42-6877E002B6F1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{919257BF-5D07-43F4-8C90-3353FFBFE01E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estudos.NSE.WebApi.Core", "src\building blocks\Estudos.NSE.WebApi.Core\Estudos.NSE.WebApi.Core.csproj", "{C6D5CFC5-8743-4A03-9284-34391044822E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +85,10 @@ Global
 		{6652DC6A-BD1C-4E35-8A42-6877E002B6F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6652DC6A-BD1C-4E35-8A42-6877E002B6F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6652DC6A-BD1C-4E35-8A42-6877E002B6F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6D5CFC5-8743-4A03-9284-34391044822E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6D5CFC5-8743-4A03-9284-34391044822E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6D5CFC5-8743-4A03-9284-34391044822E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6D5CFC5-8743-4A03-9284-34391044822E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -105,6 +113,8 @@ Global
 		{FC8B9055-EC41-40F3-B61F-15339A86FCF8} = {B52DD9B3-C7C4-472C-938E-AA68C11662B9}
 		{D539645C-54B1-40A2-8F5F-206FA8BB6169} = {D27FC001-4F66-403D-A8AD-45F073D987CE}
 		{6652DC6A-BD1C-4E35-8A42-6877E002B6F1} = {D539645C-54B1-40A2-8F5F-206FA8BB6169}
+		{919257BF-5D07-43F4-8C90-3353FFBFE01E} = {40D6C2E4-4E30-4250-828B-26C097406DDA}
+		{C6D5CFC5-8743-4A03-9284-34391044822E} = {919257BF-5D07-43F4-8C90-3353FFBFE01E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C870B4EF-CD5A-4E95-88A3-2ED3AC44FC17}
