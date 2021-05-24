@@ -18,8 +18,7 @@ namespace Estudos.NSE.WebApp.MVC.Services
         {
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri(appSettings.Value.CatalogoUrl);
-            _httpClient.DefaultRequestHeaders.Authorization = 
-                new AuthenticationHeaderValue("Bearer", user.ObterUserToken());
+           
         }
         public async Task<IEnumerable<ProdutoViewModel>> ObterTodos()
         {
