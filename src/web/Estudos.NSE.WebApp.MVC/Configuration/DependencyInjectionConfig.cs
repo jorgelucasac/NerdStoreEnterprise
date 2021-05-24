@@ -13,8 +13,14 @@ namespace Estudos.NSE.WebApp.MVC.Configuration
             services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
 
             services.AddHttpClient<IAutenticacaoService, AutenticacaoService>();
+
+
             services.AddHttpClient<ICatalogoService, CatalogoService>()
-                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AddPolicyHandler(PollyExtensions.EsperarTentar())
+            //.AddTransientHttpErrorPolicy(
+            //p => p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)))
+            ;
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUser, AspNetUser>();
