@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
+using Estudos.NSE.Clientes.API.Application.Events;
 using Estudos.NSE.Clientes.API.Models;
 using Estudos.NSE.Core.Messages;
 using FluentValidation.Results;
@@ -28,7 +29,7 @@ namespace Estudos.NSE.Clientes.API.Application.Commands
                 AdicionarErro("Este cpf já está utilizado");
                 return message.ValidationResult;
             }
-
+            cliente.AdicionarEvento(new ClienteRegistradoEvent(message.Id, message.Nome, message.Email, message.Cpf));
             _clienteRepository.Adicionar(cliente);
 
             return await PersistirDados(_clienteRepository.UnitOfWork);

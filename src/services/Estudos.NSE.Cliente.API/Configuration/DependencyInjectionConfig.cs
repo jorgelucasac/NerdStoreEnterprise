@@ -1,4 +1,5 @@
 ﻿using Estudos.NSE.Clientes.API.Application.Commands;
+using Estudos.NSE.Clientes.API.Application.Events;
 using Estudos.NSE.Clientes.API.Data;
 using Estudos.NSE.Clientes.API.Models;
 using Estudos.NSE.Core.Mediator;
@@ -13,8 +14,10 @@ namespace Estudos.NSE.Clientes.API.Configuration
     {
         public static void RegisterServices(this IServiceCollection services)
         {
-            services.AddScoped<IMediatorHaldler, MediatorHaldler>();
+            services.AddScoped<IMediatorHandler, MediatorHandler>();
             services.AddScoped<IRequestHandler<RegistrarClienteCommand, ValidationResult>, ClienteCommandHandler>();
+
+            services.AddScoped<INotificationHandler<ClienteRegistradoEvent>, ClienteEventHandler>();
 
             services.AddScoped<IClienteRepository, IClienteRepository>();
             services.AddScoped<ClienteDbContext>();
