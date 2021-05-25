@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace Estudos.NSE.Identidade.API.Controllers
+namespace Estudos.NSE.WebApi.Core.Controllers
 {
     [ApiController]
     public abstract class MainController : Controller
@@ -27,6 +28,16 @@ namespace Estudos.NSE.Identidade.API.Controllers
             var erros = modelState.Values.SelectMany(e => e.Errors).ToList();
             erros.ForEach(erro => AdicionarErroProcessamento(erro.ErrorMessage));
 
+            return CustomResponse();
+        }
+
+        protected ActionResult CustomResponse(ValidationResult validationResult)
+        {
+            foreach (var erro in validationResult.Errors)
+            {
+                AdicionarErroProcessamento(erro.ErrorMessage);
+
+            }
             return CustomResponse();
         }
 

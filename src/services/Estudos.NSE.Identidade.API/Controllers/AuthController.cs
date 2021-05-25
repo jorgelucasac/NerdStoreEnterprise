@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Estudos.NSE.Identidade.API.Extensions;
 using Estudos.NSE.Identidade.API.Models;
+using Estudos.NSE.WebApi.Core.Controllers;
 using Estudos.NSE.WebApi.Core.Identidade;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

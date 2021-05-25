@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Estudos.NSE.Catalogo.API.Models;
+using Estudos.NSE.WebApi.Core.Controllers;
 using Estudos.NSE.WebApi.Core.Identidade;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Estudos.NSE.Catalogo.API.Controllers
 {
-    [ApiController]
     [Authorize]
     [Route("api/[controller]")]
-    public class CatalogoController : Controller
+    public class CatalogoController : MainController
     {
         private readonly IProdutoRepository _produtoRepository;
 

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Security.AccessControl;
 using Estudos.NSE.Core.Messages;
 using FluentValidation;
-using FluentValidation.Results;
 
 namespace Estudos.NSE.Clientes.API.Application.Commands
 {

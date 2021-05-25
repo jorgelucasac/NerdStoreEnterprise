@@ -19,7 +19,7 @@ namespace Estudos.NSE.Core.Mediator
             await _mediator.Publish(evento);
         }
 
-        public async Task<ValidationResult> PublicarComando<TComando>(TComando comando) where TComando : Command
+        public async Task<ValidationResult> EnviarComando<TComando>(TComando comando) where TComando : Command
         {
             return await _mediator.Send(comando);
         }
