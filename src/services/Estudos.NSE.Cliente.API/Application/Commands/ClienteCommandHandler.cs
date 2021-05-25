@@ -27,7 +27,7 @@ namespace Estudos.NSE.Clientes.API.Application.Commands
             if (cpfJaUtilizado)
             {
                 AdicionarErro("Este cpf já está utilizado");
-                return message.ValidationResult;
+                return ValidationResult;
             }
             cliente.AdicionarEvento(new ClienteRegistradoEvent(message.Id, message.Nome, message.Email, message.Cpf));
             _clienteRepository.Adicionar(cliente);
