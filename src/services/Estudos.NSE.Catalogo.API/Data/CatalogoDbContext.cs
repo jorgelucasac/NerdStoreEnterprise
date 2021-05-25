@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using Estudos.NSE.Core.Data;
+using Estudos.NSE.Core.Messages;
+using FluentValidation.Results;
 
 namespace Estudos.NSE.Catalogo.API.Data
 {
@@ -16,6 +18,9 @@ namespace Estudos.NSE.Catalogo.API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Ignore<ValidationResult>();
+            modelBuilder.Ignore<Event>();
+
             foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(
                 e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
             {

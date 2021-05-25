@@ -4,6 +4,8 @@ using Estudos.NSE.Clientes.API.Models;
 using Estudos.NSE.Core.Data;
 using Estudos.NSE.Core.DomainObjects;
 using Estudos.NSE.Core.Mediator;
+using Estudos.NSE.Core.Messages;
+using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 
 namespace Estudos.NSE.Clientes.API.Data
@@ -23,6 +25,9 @@ namespace Estudos.NSE.Clientes.API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Ignore<ValidationResult>();
+            modelBuilder.Ignore<Event>();
 
             foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(
                 e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
