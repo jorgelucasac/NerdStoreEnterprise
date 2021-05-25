@@ -22,11 +22,11 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Configuration\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\building blocks\Estudos.NSE.Core\Estudos.NSE.Core.csproj" />
+    <ProjectReference Include="..\..\building blocks\Estudos.NSE.WebApi.Core\Estudos.NSE.WebApi.Core.csproj" />
   </ItemGroup>
 
 
