@@ -1,6 +1,7 @@
 ﻿using Estudos.NSE.Clientes.API.Application.Commands;
 using Estudos.NSE.Clientes.API.Application.Events;
 using Estudos.NSE.Clientes.API.Data;
+using Estudos.NSE.Clientes.API.Data.Repository;
 using Estudos.NSE.Clientes.API.Models;
 using Estudos.NSE.Core.Mediator;
 using FluentValidation.Results;
@@ -19,7 +20,7 @@ namespace Estudos.NSE.Clientes.API.Configuration
 
             services.AddScoped<INotificationHandler<ClienteRegistradoEvent>, ClienteEventHandler>();
 
-            services.AddScoped<IClienteRepository, IClienteRepository>();
+            services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<ClienteDbContext>();
         }
     }
