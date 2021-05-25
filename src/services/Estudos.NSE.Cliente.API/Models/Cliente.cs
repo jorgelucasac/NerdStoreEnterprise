@@ -1,7 +1,7 @@
 ﻿using System;
 using Estudos.NSE.Core.DomainObjects;
 
-namespace Estudos.NSE.Cliente.API.Models
+namespace Estudos.NSE.Clientes.API.Models
 {
     public class Cliente : Entity, IAggregateRoot
     {
