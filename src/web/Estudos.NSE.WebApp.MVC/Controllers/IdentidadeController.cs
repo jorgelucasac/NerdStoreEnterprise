@@ -38,7 +38,7 @@ namespace Estudos.NSE.WebApp.MVC.Controllers
             if (ResponsePossuiErros(resposta.ResponseResult)) return View(usuarioRegistro);
 
             await RealizarLogin(resposta);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Catalogo");
         }
 
         [HttpGet]
@@ -63,7 +63,7 @@ namespace Estudos.NSE.WebApp.MVC.Controllers
 
             if (!string.IsNullOrEmpty(returnUrl)) return LocalRedirect(returnUrl);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Catalogo");
         }
 
         [HttpGet]
@@ -71,7 +71,7 @@ namespace Estudos.NSE.WebApp.MVC.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Catalogo");
         }
 
 
