@@ -5,11 +5,11 @@ using MediatR;
 
 namespace Estudos.NSE.Core.Mediator
 {
-    public class MediatorHaldler : IMediatorHaldler
+    public class MediatorHandler : IMediatorHandler
     {
         private readonly IMediator _mediator;
 
-        public MediatorHaldler(IMediator mediator)
+        public MediatorHandler(IMediator mediator)
         {
             _mediator = mediator;
         }
