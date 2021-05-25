@@ -2,24 +2,36 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Estudos.NSE.Clientes.API.Models;
+using Estudos.NSE.Core.Messages;
 using FluentValidation.Results;
 
 namespace Estudos.NSE.Clientes.API.Application.Commands
 {
-    public class ClienteCommandHandler : IRequestHandler<RegistrarClienteCommand, ValidationResult>
+    public class ClienteCommandHandler : CommandHandler, IRequestHandler<RegistrarClienteCommand, ValidationResult>
     {
+        private readonly IClienteRepository _clienteRepository;
+
+        public ClienteCommandHandler(IClienteRepository clienteRepository)
+        {
+            _clienteRepository = clienteRepository;
+        }
+
         public async Task<ValidationResult> Handle(RegistrarClienteCommand message, CancellationToken cancellationToken)
         {
             if (!message.EhValido()) return message.ValidationResult;
 
             var cliente = new Cliente(message.Id, message.Nome, message.Email, message.Cpf);
 
-            //validações de negócio
+            var cpfJaUtilizado = await _clienteRepository.CpfJaUtilizado(cliente.Cpf.Numero);
+            if (cpfJaUtilizado)
+            {
+                AdicionarErro("Este cpf já está utilizado");
+                return message.ValidationResult;
+            }
 
-            //persistir no banco
+            _clienteRepository.Adicionar(cliente);
 
-
-            return null;
+            return await PersistirDados(_clienteRepository.UnitOfWork);
         }
     }
 }
