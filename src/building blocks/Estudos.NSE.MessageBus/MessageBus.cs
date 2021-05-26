@@ -10,8 +10,8 @@ namespace Estudos.NSE.MessageBus
     public class MessageBus : IMessageBus
     {
         private IBus _bus;
-
         private readonly string _connectionString;
+        private IAdvancedBus _advancedBus;
 
         public MessageBus(string connectionString)
         {
@@ -20,6 +20,8 @@ namespace Estudos.NSE.MessageBus
         }
 
         public bool IsConnected => _bus?.IsConnected ?? false;
+        public IAdvancedBus AdvancedBus => _bus?.Advanced;
+
         public void Publish<T>(T message) where T : IntegrationEvent
         {
             TryConnect();
@@ -84,11 +86,28 @@ namespace Estudos.NSE.MessageBus
             policy.Execute(() =>
             {
                 _bus = RabbitHutch.CreateBus(_connectionString);
+                _advancedBus = _bus.Advanced;
+                //evento lançado ao desconectar
+                _advancedBus.Disconnected += OnDisconnect;
             });
 
 
 
 
+        }
+
+        /// <summary>
+        /// quando desconectar, tenta connectar eternamente
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="e"></param>
+        private void OnDisconnect(object s, EventArgs e)
+        {
+            var policy = Policy.Handle<EasyNetQException>()
+                .Or<BrokerUnreachableException>()
+                .RetryForever();
+
+            policy.Execute(TryConnect);
         }
 
         public void Dispose()

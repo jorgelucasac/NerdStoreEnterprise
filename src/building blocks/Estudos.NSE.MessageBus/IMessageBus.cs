@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using EasyNetQ;
 using Estudos.NSE.Core.Messages.Integrations;
 
 namespace Estudos.NSE.MessageBus
@@ -7,6 +8,7 @@ namespace Estudos.NSE.MessageBus
     public interface IMessageBus : IDisposable
     {
         bool IsConnected { get; }
+        IAdvancedBus AdvancedBus { get; }
 
         void Publish<T>(T message) where T : IntegrationEvent;
 

@@ -21,13 +21,25 @@ namespace Estudos.NSE.Clientes.API.Services
             _messageBus = messageBus;
         }
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        /// <summary>
+        /// realiza o subscribe na fila
+        /// </summary>
+        private void SetResponder()
         {
-
             _messageBus.RespondAsync<UsuarioRegistradoIntegrationEvent, ResponseMessage>(
                 async request => await RegistrarCliente(request));
+            _messageBus.AdvancedBus.Connected += OnConnect;
+        }
 
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            SetResponder();
             return Task.CompletedTask;
+        }
+
+        private void OnConnect(object? sender, EventArgs e)
+        {
+            SetResponder();
         }
 
         private async Task<ResponseMessage> RegistrarCliente(UsuarioRegistradoIntegrationEvent message)
