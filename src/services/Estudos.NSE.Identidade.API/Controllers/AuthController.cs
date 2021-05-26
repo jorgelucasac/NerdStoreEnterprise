@@ -5,6 +5,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using EasyNetQ;
+using Estudos.NSE.Core.Messages.Integrations;
 using Estudos.NSE.Identidade.API.Extensions;
 using Estudos.NSE.Identidade.API.Models;
 using Estudos.NSE.WebApi.Core.Controllers;
@@ -22,13 +24,15 @@ namespace Estudos.NSE.Identidade.API.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly AppSettings _appSettings;
+        private IBus _bus;
 
         public AuthController(SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
-            IOptions<AppSettings> appSettings)
+            IOptions<AppSettings> appSettings, IBus bus)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _bus = bus;
             _appSettings = appSettings.Value;
         }
 
@@ -46,7 +50,11 @@ namespace Estudos.NSE.Identidade.API.Controllers
 
             var result = await _userManager.CreateAsync(user, registro.Senha);
 
-            if (result.Succeeded) return CustomResponse(await GerarJwt(registro.Email));
+            if (result.Succeeded)
+            {
+                var sucesso = await RegistrarCliente(registro);
+                return CustomResponse(await GerarJwt(registro.Email));
+            }
 
             foreach (var error in result.Errors)
             {
@@ -142,11 +150,24 @@ namespace Estudos.NSE.Identidade.API.Controllers
             };
         }
 
-
         private static long ToUnixEpochDate(DateTime time)
         {
             return (long)Math.Round((decimal)new DateTimeOffset(time.ToUniversalTime()).ToUnixTimeSeconds());
         }
+
+        private async Task<ResponseMessage> RegistrarCliente(UsuarioRegistro registro)
+        {
+            var usuario = await _userManager.FindByEmailAsync(registro.Email);
+            var usuarioRegistradoEvent = new UsuarioRegistradoIntegrationEvent(
+                Guid.Parse(usuario.Id), registro.Nome, registro.Email, registro.Cpf);
+
+            _bus = RabbitHutch.CreateBus("host=localhost:5672");
+            var sucesso = await _bus.RequestAsync<UsuarioRegistradoIntegrationEvent, ResponseMessage>(usuarioRegistradoEvent);
+
+            return sucesso;
+
+        }
+
         #endregion
     }
 }
