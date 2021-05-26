@@ -47,6 +47,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{91
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Estudos.NSE.WebApi.Core", "src\building blocks\Estudos.NSE.WebApi.Core\Estudos.NSE.WebApi.Core.csproj", "{C6D5CFC5-8743-4A03-9284-34391044822E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MessageBus", "MessageBus", "{F2863B72-E58A-4458-A870-757154BD17D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estudos.NSE.MessageBus", "src\building blocks\Estudos.NSE.MessageBus\Estudos.NSE.MessageBus.csproj", "{1D316C21-CE08-4C7B-B1A6-8A197204B340}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -89,6 +93,10 @@ Global
 		{C6D5CFC5-8743-4A03-9284-34391044822E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6D5CFC5-8743-4A03-9284-34391044822E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6D5CFC5-8743-4A03-9284-34391044822E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D316C21-CE08-4C7B-B1A6-8A197204B340}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D316C21-CE08-4C7B-B1A6-8A197204B340}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D316C21-CE08-4C7B-B1A6-8A197204B340}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D316C21-CE08-4C7B-B1A6-8A197204B340}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -115,6 +123,8 @@ Global
 		{6652DC6A-BD1C-4E35-8A42-6877E002B6F1} = {D539645C-54B1-40A2-8F5F-206FA8BB6169}
 		{919257BF-5D07-43F4-8C90-3353FFBFE01E} = {40D6C2E4-4E30-4250-828B-26C097406DDA}
 		{C6D5CFC5-8743-4A03-9284-34391044822E} = {919257BF-5D07-43F4-8C90-3353FFBFE01E}
+		{F2863B72-E58A-4458-A870-757154BD17D1} = {40D6C2E4-4E30-4250-828B-26C097406DDA}
+		{1D316C21-CE08-4C7B-B1A6-8A197204B340} = {F2863B72-E58A-4458-A870-757154BD17D1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C870B4EF-CD5A-4E95-88A3-2ED3AC44FC17}

@@ -5,10 +5,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using EasyNetQ;
 using Estudos.NSE.Core.Messages.Integrations;
-using Estudos.NSE.Identidade.API.Extensions;
 using Estudos.NSE.Identidade.API.Models;
+using Estudos.NSE.MessageBus;
 using Estudos.NSE.WebApi.Core.Controllers;
 using Estudos.NSE.WebApi.Core.Identidade;
 using Microsoft.AspNetCore.Identity;
@@ -24,14 +23,15 @@ namespace Estudos.NSE.Identidade.API.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly AppSettings _appSettings;
-        private IBus _bus;
+        private readonly IMessageBus _messageBus;
 
         public AuthController(SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
-            IOptions<AppSettings> appSettings)
+            IOptions<AppSettings> appSettings, IMessageBus messageBus)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _messageBus = messageBus;
             _appSettings = appSettings.Value;
         }
 
@@ -51,7 +51,14 @@ namespace Estudos.NSE.Identidade.API.Controllers
 
             if (result.Succeeded)
             {
-                var sucesso = await RegistrarCliente(registro);
+                var clienteResult = await RegistrarCliente(registro);
+
+                if (!clienteResult.ValidationResult.IsValid)
+                {
+                    await _userManager.DeleteAsync(user);
+                    return CustomResponse(clienteResult.ValidationResult);
+                }
+
                 return CustomResponse(await GerarJwt(registro.Email));
             }
 
@@ -159,12 +166,16 @@ namespace Estudos.NSE.Identidade.API.Controllers
             var usuario = await _userManager.FindByEmailAsync(registro.Email);
             var usuarioRegistradoEvent = new UsuarioRegistradoIntegrationEvent(
                 Guid.Parse(usuario.Id), registro.Nome, registro.Email, registro.Cpf);
+            try
+            {
+                return await _messageBus.RequestAsync<UsuarioRegistradoIntegrationEvent, ResponseMessage>(usuarioRegistradoEvent);
+            }
+            catch
+            {
 
-            _bus = RabbitHutch.CreateBus("host=localhost:5672");
-            var sucesso = await _bus.RequestAsync<UsuarioRegistradoIntegrationEvent, ResponseMessage>(usuarioRegistradoEvent);
-
-            return sucesso;
-
+                await _userManager.DeleteAsync(usuario);
+                throw;
+            }
         }
 
         #endregion
