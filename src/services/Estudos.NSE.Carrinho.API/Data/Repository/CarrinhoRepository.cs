@@ -14,11 +14,17 @@ namespace Estudos.NSE.Carrinho.API.Data.Repository
             _context = context;
         }
 
-        public async Task<CarrinhoCliente> ObterCarrionhoCliente(Guid clienteId)
+        public async Task<CarrinhoCliente> ObterCarrinhoCliente(Guid clienteId)
         {
             return await _context.CarrinhoCliente
                 .Include(c => c.Itens)
                 .FirstOrDefaultAsync(c => c.ClienteId == clienteId);
+        }
+
+        public async Task<CarrinhoItem> ObterCarrinhoItem(Guid carrinhoId, Guid produtoId)
+        {
+            return await _context.CarrinhoItens
+                .FirstOrDefaultAsync(item => item.CarrinhoId == carrinhoId && produtoId == produtoId);
         }
 
         public async Task Adicionar(CarrinhoCliente carrinhoCliente)
@@ -39,6 +45,11 @@ namespace Estudos.NSE.Carrinho.API.Data.Repository
         public void AtualizarItem(CarrinhoItem carrinhoItem)
         {
             _context.CarrinhoItens.Update(carrinhoItem);
+        }
+
+        public void RemoverItem(CarrinhoItem carrinhoItem)
+        {
+            _context.CarrinhoItens.Remove(carrinhoItem);
         }
 
         public async Task<bool> SaveChangesAsync()

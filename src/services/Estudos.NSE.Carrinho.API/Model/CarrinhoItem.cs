@@ -36,6 +36,11 @@ namespace Estudos.NSE.Carrinho.API.Model
             return Quantidade += unidades;
         }
 
+        internal int AtualizarUnidades(int unidades)
+        {
+            return Quantidade = unidades;
+        }
+
         internal bool EhValido()
         {
             return new ItenPedidoValidation().Validate(this).IsValid;
