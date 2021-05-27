@@ -1,6 +1,8 @@
-﻿using Estudos.NSE.WebApi.Core.Identidade;
+﻿using Estudos.NSE.Carrinho.API.Data;
+using Estudos.NSE.WebApi.Core.Identidade;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -11,6 +13,8 @@ namespace Estudos.NSE.Carrinho.API.Configuration
     {
         public static void AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddDbContext<CarrinhoDbContext>(opt =>
+                opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllers();
 

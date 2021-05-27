@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Estudos.NSE.Carrinho.API.Data;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Estudos.NSE.Carrinho.API.Configuration
 {
@@ -6,8 +7,7 @@ namespace Estudos.NSE.Carrinho.API.Configuration
     {
         public static void RegisterServices(this IServiceCollection services)
         {
-           
-
+            services.AddScoped<CarrinhoDbContext>();
         }
     }
 }
