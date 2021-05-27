@@ -1,4 +1,5 @@
 ﻿using System;
+using Estudos.NSE.WebApi.Core.Usuario;
 using Estudos.NSE.WebApp.MVC.Extensions;
 using Estudos.NSE.WebApp.MVC.Services;
 using Estudos.NSE.WebApp.MVC.Services.Handlers;
@@ -29,7 +30,7 @@ namespace Estudos.NSE.WebApp.MVC.Configuration
             ;
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IUser, AspNetUser>();
+            services.AddScoped<IAspNetUser, AspNetUser>();
         }
     }
 }

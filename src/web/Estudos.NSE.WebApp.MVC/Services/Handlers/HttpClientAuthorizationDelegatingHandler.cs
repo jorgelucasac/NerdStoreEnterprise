@@ -3,15 +3,16 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
+using Estudos.NSE.WebApi.Core.Usuario;
 using Estudos.NSE.WebApp.MVC.Extensions;
 
 namespace Estudos.NSE.WebApp.MVC.Services.Handlers
 {
     public class HttpClientAuthorizationDelegatingHandler : DelegatingHandler
     {
-        private readonly IUser _user;
+        private readonly IAspNetUser _user;
 
-        public HttpClientAuthorizationDelegatingHandler(IUser user)
+        public HttpClientAuthorizationDelegatingHandler(IAspNetUser user)
         {
             _user = user;
         }
