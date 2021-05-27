@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Estudos.NSE.Carrinho.API.Model
 {
@@ -17,5 +18,41 @@ namespace Estudos.NSE.Carrinho.API.Model
         }
 
         public CarrinhoCliente() { }
+
+
+        internal void CalcularValorCarrinho()
+        {
+            ValorTotal = Itens.Sum(i => i.CalcularValorTotal());
+        }
+
+        internal bool CarrinhoItemExiste(CarrinhoItem item)
+        {
+            return Itens.Any(a => a.Id == item.Id);
+        }
+
+        internal CarrinhoItem ObterProdutoPorId(Guid id)
+        {
+            return Itens.First(a => a.Id == id);
+        }
+
+
+        internal void AdicionarItem(CarrinhoItem item)
+        {
+            if (!item.EhValido()) return;
+
+            item.AssociarCarrinho(Id);
+
+            if (CarrinhoItemExiste(item))
+            {
+                var itemExistente = ObterProdutoPorId(item.Id);
+                itemExistente.AdicionarUnidades(item.Quantidade);
+
+                Itens.Remove(itemExistente);
+                item = itemExistente;
+            }
+
+            Itens.Add(item);
+            CalcularValorCarrinho();
+        }
     }
 }
