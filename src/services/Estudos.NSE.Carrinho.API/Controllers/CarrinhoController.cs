@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Estudos.NSE.Carrinho.API.Model;
 using Estudos.NSE.WebApi.Core.Controllers;
@@ -36,14 +37,15 @@ namespace Estudos.NSE.Carrinho.API.Controllers
                 await ManipularNovoCarinho(carrinhoItem);
             else
                 await ManipularCarinhoExistente(carrinho, carrinhoItem);
-
+            
+            ValidarCarrinho(carrinho);
             if (!OperacaoValida()) return CustomResponse();
 
             await PersistirDados();
 
             return CustomResponse();
         }
-        
+
         [HttpPut]
         public async Task<IActionResult> AtualizarItemCarrinho([FromRoute] Guid produtoId, CarrinhoItem item)
         {
@@ -52,6 +54,8 @@ namespace Estudos.NSE.Carrinho.API.Controllers
             if (itemCarrinho is null) return CustomResponse();
             carrinho.AtualizarUnidades(itemCarrinho, item.Quantidade);
 
+            ValidarCarrinho(carrinho);
+            if (!OperacaoValida()) return CustomResponse();
 
             _carrinhoRepository.AtualizarItem(itemCarrinho);
             _carrinhoRepository.Atualizar(carrinho);
@@ -67,7 +71,9 @@ namespace Estudos.NSE.Carrinho.API.Controllers
             var carrinho = await _carrinhoRepository.ObterCarrinhoCliente(_user.ObterUserId());
             var itemCarrinho = await ObterItemCarrinhoValidado(produtoId, carrinho);
             if (itemCarrinho is null) return CustomResponse();
-            
+            ValidarCarrinho(carrinho);
+            if (!OperacaoValida()) return CustomResponse();
+
             carrinho.RemoverItem(itemCarrinho);
 
             _carrinhoRepository.RemoverItem(itemCarrinho);
@@ -128,6 +134,14 @@ namespace Estudos.NSE.Carrinho.API.Controllers
             var sucesso = await _carrinhoRepository.SaveChangesAsync();
             if (!sucesso)
                 AdicionarErroProcessamento("Não foi possível persistir os dados no banco");
+        }
+
+        private bool ValidarCarrinho(CarrinhoCliente carrinho)
+        {
+            if (carrinho.EhValido()) return true;
+
+            carrinho.ValidationResult.Errors.ToList().ForEach(i => AdicionarErroProcessamento(i.ErrorMessage));
+            return false;
         }
         #endregion
 

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using FluentValidation;
+using FluentValidation.Results;
 
 namespace Estudos.NSE.Carrinho.API.Model
 {
@@ -41,15 +43,20 @@ namespace Estudos.NSE.Carrinho.API.Model
             return Quantidade = unidades;
         }
 
+        internal IList<ValidationFailure> ObetErros()
+        {
+            return new ItenCarrinhoValidation().Validate(this).Errors;
+        }
+
         internal bool EhValido()
         {
-            return new ItenPedidoValidation().Validate(this).IsValid;
+            return new ItenCarrinhoValidation().Validate(this).IsValid;
         }
 
 
-        public class ItenPedidoValidation: AbstractValidator<CarrinhoItem>
+        public class ItenCarrinhoValidation : AbstractValidator<CarrinhoItem>
         {
-            public ItenPedidoValidation()
+            public ItenCarrinhoValidation()
             {
                 RuleFor(c => c.ProdutoId)
                     .NotEqual(Guid.Empty)
@@ -61,15 +68,15 @@ namespace Estudos.NSE.Carrinho.API.Model
 
                 RuleFor(c => c.Quantidade)
                     .GreaterThan(0)
-                    .WithMessage("a quntidade miníma de um item é 1");
+                    .WithMessage(item => $"a quntidade miníma para o {item.Nome} é 1");
 
                 RuleFor(c => c.Quantidade)
                     .LessThan(MaxQuantidadeItem)
-                    .WithMessage($"a quntidade máxima de um item é {MaxQuantidadeItem}");
+                    .WithMessage(item => $"a quantidade máxima do {item.Nome} é {MaxQuantidadeItem}");
 
                 RuleFor(c => c.Valor)
                     .GreaterThan(0)
-                    .WithMessage("o valor do produto precisa ser maior que 0");
+                    .WithMessage(item => $"o valor do {item.Nome} precisa ser maior que 0");
 
             }
         }

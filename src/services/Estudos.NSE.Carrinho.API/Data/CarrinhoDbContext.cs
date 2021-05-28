@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Estudos.NSE.Carrinho.API.Model;
+using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 
 namespace Estudos.NSE.Carrinho.API.Data
@@ -20,6 +21,9 @@ namespace Estudos.NSE.Carrinho.API.Data
             foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(
                 e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
                 property.SetColumnType("varchar(100)");
+
+
+            modelBuilder.Ignore<ValidationResult>();
 
             modelBuilder.Entity<CarrinhoCliente>().ToTable("CarrinhoCliente");
             modelBuilder.Entity<CarrinhoItem>().ToTable("CarrinhoItem");
