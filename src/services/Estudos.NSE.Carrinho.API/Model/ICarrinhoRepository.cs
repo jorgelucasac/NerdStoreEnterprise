@@ -16,6 +16,9 @@ namespace Estudos.NSE.Carrinho.API.Model
 
         void RemoverItem(CarrinhoItem carrinhoItem);
 
+        Task<int> ObterQuantidadeItensCarrinho(Guid clienteId);
+        Task<bool> PossuiCarrinho(Guid clienteId);
+
         Task<bool> SaveChangesAsync();
     }
 }

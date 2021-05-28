@@ -25,9 +25,15 @@ namespace Estudos.NSE.Carrinho.API.Controllers
         [HttpGet]
         public async Task<CarrinhoCliente> ObterCarrinho()
         {
-            var carrinho = await _carrinhoRepository.ObterCarrinhoCliente(_user.ObterUserId()) ?? new CarrinhoCliente(_user.ObterUserId());
-            return carrinho;
+            return await _carrinhoRepository.ObterCarrinhoCliente(_user.ObterUserId()) ?? new CarrinhoCliente(_user.ObterUserId());
         }
+
+        [HttpGet("quantidade-itens-carrinho")]
+        public async Task<int> ObterQuantidadeItensCarrinho()
+        {
+            return await _carrinhoRepository.ObterQuantidadeItensCarrinho(_user.ObterUserId());
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> AdicionarItemCarrinho(CarrinhoItem carrinhoItem)

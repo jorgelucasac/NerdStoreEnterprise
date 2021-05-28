@@ -28,6 +28,15 @@ namespace Estudos.NSE.WebApp.MVC.Services
             return await DeserializarObjetoResponse<CarrinhoViewModel>(response);
         }
 
+        public async Task<int> ObterQuantidadeItensCarrinho()
+        {
+            var response = await _httpClient.GetAsync($"{Api}quantidade-itens-carrinho");
+
+            TratarErrosResponse(response);
+
+            return await DeserializarObjetoResponse<int>(response);
+        }
+
         public async Task<ResponseResult> AdicionarItemCarrinho(ItemProdutoViewModel produto)
         {
             var produtoContent = PrepararConteudo(produto);

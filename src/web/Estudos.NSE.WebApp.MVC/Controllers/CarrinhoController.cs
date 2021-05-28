@@ -22,8 +22,7 @@ namespace Estudos.NSE.WebApp.MVC.Controllers
         [Route("")]
         public async Task<IActionResult> Index()
         {
-            var carrinho = await _carrinhoService.ObterCarrinho();
-            return View(carrinho);
+            return View(await _carrinhoService.ObterCarrinho());
         }
 
         [HttpPost]

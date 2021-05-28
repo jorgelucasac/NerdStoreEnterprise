@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Estudos.NSE.Carrinho.API.Model;
 using Microsoft.EntityFrameworkCore;
@@ -50,6 +51,16 @@ namespace Estudos.NSE.Carrinho.API.Data.Repository
         public void RemoverItem(CarrinhoItem carrinhoItem)
         {
             _context.CarrinhoItens.Remove(carrinhoItem);
+        }
+
+        public async Task<int> ObterQuantidadeItensCarrinho(Guid clienteId)
+        {
+            return await _context.CarrinhoItens.CountAsync(i => i.CarrinhoCliente.ClienteId == clienteId);
+        }
+
+        public async Task<bool> PossuiCarrinho(Guid clienteId)
+        {
+            return await _context.CarrinhoCliente.AnyAsync(c => c.ClienteId == clienteId);
         }
 
         public async Task<bool> SaveChangesAsync()
