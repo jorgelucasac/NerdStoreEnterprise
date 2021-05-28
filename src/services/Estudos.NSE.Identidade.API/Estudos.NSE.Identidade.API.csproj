@@ -23,9 +23,14 @@
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Data\" />
-    <Folder Include="Configuration\" />
     <Folder Include="Extensions\" />
     <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\building blocks\Estudos.NSE.Core\Estudos.NSE.Core.csproj" />
+    <ProjectReference Include="..\..\building blocks\Estudos.NSE.MessageBus\Estudos.NSE.MessageBus.csproj" />
+    <ProjectReference Include="..\..\building blocks\Estudos.NSE.WebApi.Core\Estudos.NSE.WebApi.Core.csproj" />
   </ItemGroup>
 
 

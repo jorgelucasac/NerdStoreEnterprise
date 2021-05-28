@@ -5,8 +5,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Estudos.NSE.Identidade.API.Extensions;
+using Estudos.NSE.Core.Messages.Integrations;
 using Estudos.NSE.Identidade.API.Models;
+using Estudos.NSE.MessageBus;
+using Estudos.NSE.WebApi.Core.Controllers;
+using Estudos.NSE.WebApi.Core.Identidade;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -20,13 +23,15 @@ namespace Estudos.NSE.Identidade.API.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly AppSettings _appSettings;
+        private readonly IMessageBus _messageBus;
 
         public AuthController(SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
-            IOptions<AppSettings> appSettings)
+            IOptions<AppSettings> appSettings, IMessageBus messageBus)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _messageBus = messageBus;
             _appSettings = appSettings.Value;
         }
 
@@ -44,7 +49,18 @@ namespace Estudos.NSE.Identidade.API.Controllers
 
             var result = await _userManager.CreateAsync(user, registro.Senha);
 
-            if (result.Succeeded) return CustomResponse(await GerarJwt(registro.Email));
+            if (result.Succeeded)
+            {
+                var clienteResult = await RegistrarCliente(registro);
+
+                if (!clienteResult.ValidationResult.IsValid)
+                {
+                    await _userManager.DeleteAsync(user);
+                    return CustomResponse(clienteResult.ValidationResult);
+                }
+
+                return CustomResponse(await GerarJwt(registro.Email));
+            }
 
             foreach (var error in result.Errors)
             {
@@ -140,11 +156,28 @@ namespace Estudos.NSE.Identidade.API.Controllers
             };
         }
 
-
         private static long ToUnixEpochDate(DateTime time)
         {
             return (long)Math.Round((decimal)new DateTimeOffset(time.ToUniversalTime()).ToUnixTimeSeconds());
         }
+
+        private async Task<ResponseMessage> RegistrarCliente(UsuarioRegistro registro)
+        {
+            var usuario = await _userManager.FindByEmailAsync(registro.Email);
+            var usuarioRegistradoEvent = new UsuarioRegistradoIntegrationEvent(
+                Guid.Parse(usuario.Id), registro.Nome, registro.Email, registro.Cpf);
+            try
+            {
+                return await _messageBus.RequestAsync<UsuarioRegistradoIntegrationEvent, ResponseMessage>(usuarioRegistradoEvent);
+            }
+            catch
+            {
+
+                await _userManager.DeleteAsync(usuario);
+                throw;
+            }
+        }
+
         #endregion
     }
 }

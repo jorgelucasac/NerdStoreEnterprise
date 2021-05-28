@@ -11,7 +11,7 @@ namespace Estudos.NSE.Identidade.API.Configuration
         {
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("Identidade-V1", new OpenApiInfo
+                c.SwaggerDoc("identidade-V1", new OpenApiInfo
                 {
                     Title = "NerdStore Enterprise Identity API",
                     Description = "Esta API faz parte do curso ASP.NET Core Enterprise Applications.",
@@ -27,7 +27,7 @@ namespace Estudos.NSE.Identidade.API.Configuration
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/Identidade-V1/swagger.json", "Identidade-V1");
+                c.SwaggerEndpoint("/swagger/identidade-V1/swagger.json", "identidade-V1");
             });
         }
     }

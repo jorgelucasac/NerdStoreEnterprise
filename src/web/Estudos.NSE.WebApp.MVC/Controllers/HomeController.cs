@@ -14,16 +14,24 @@ namespace Estudos.NSE.WebApp.MVC.Controllers
             _logger = logger;
         }
 
-        [Route("/")]
-        public IActionResult Index()
-        {
-            return View();
-        }
-
+      
         [Route("privacidade")]
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        [Route("sistema-indisponivel")]
+        public IActionResult SistemaIndisponivel()
+        {
+            var modelErro = new ErrorViewModel
+            {
+                Mensagem = "O sistema está temporariamente indisponível, isto pode ocorrer em momentos de sobrecarga de usuários.",
+                Titulo = "Sistema indisponível.",
+                ErroCode = StatusCodes.Status500InternalServerError
+            };
+
+            return View("Error", modelErro);
         }
 
         [Route("erro/{id}")]
