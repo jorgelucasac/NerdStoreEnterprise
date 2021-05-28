@@ -30,12 +30,12 @@ namespace Estudos.NSE.Carrinho.API.Model
 
         internal bool CarrinhoItemExiste(CarrinhoItem item)
         {
-            return Itens.Any(a => a.Id == item.Id);
+            return Itens.Any(a => a.ProdutoId == item.ProdutoId);
         }
 
-        internal CarrinhoItem ObterProdutoPorId(Guid id)
+        internal CarrinhoItem ObterProdutoPorId(Guid produtoId)
         {
-            return Itens.First(a => a.Id == id);
+            return Itens.First(a => a.ProdutoId == produtoId);
         }
 
 
@@ -46,7 +46,7 @@ namespace Estudos.NSE.Carrinho.API.Model
 
             if (CarrinhoItemExiste(item))
             {
-                var itemExistente = ObterProdutoPorId(item.Id);
+                var itemExistente = ObterProdutoPorId(item.ProdutoId);
                 itemExistente.AdicionarUnidades(item.Quantidade);
 
                 Itens.Remove(itemExistente);
@@ -61,7 +61,7 @@ namespace Estudos.NSE.Carrinho.API.Model
         {
             item.AssociarCarrinho(Id);
 
-            var itemExistente = ObterProdutoPorId(item.Id);
+            var itemExistente = ObterProdutoPorId(item.ProdutoId);
 
             Itens.Remove(itemExistente);
             Itens.Add(item);
@@ -77,7 +77,7 @@ namespace Estudos.NSE.Carrinho.API.Model
 
         internal void RemoverItem(CarrinhoItem item)
         {
-            var itemExistente = ObterProdutoPorId(item.Id);
+            var itemExistente = ObterProdutoPorId(item.ProdutoId);
             Itens.Remove(itemExistente);
             CalcularValorCarrinho();
         }

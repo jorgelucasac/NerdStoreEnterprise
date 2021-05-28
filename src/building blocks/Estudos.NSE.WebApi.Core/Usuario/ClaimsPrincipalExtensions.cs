@@ -12,7 +12,8 @@ namespace Estudos.NSE.WebApi.Core.Usuario
                 throw new ArgumentException(nameof(principal));
             }
 
-            var claim = principal.FindFirst("sub");
+            var claim = principal.FindFirst("sub") ?? 
+                        principal.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
             return claim?.Value;
         }
 
@@ -23,7 +24,8 @@ namespace Estudos.NSE.WebApi.Core.Usuario
                 throw new ArgumentException(nameof(principal));
             }
 
-            var claim = principal.FindFirst("email");
+            var claim = principal.FindFirst("email") ??
+                        principal.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress");
             return claim?.Value;
         }
 

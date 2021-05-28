@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using FluentValidation;
 using FluentValidation.Results;
 
@@ -21,6 +22,7 @@ namespace Estudos.NSE.Carrinho.API.Model
         public string Imagem { get; set; }
         public Guid CarrinhoId { get; set; }
 
+        [JsonIgnore]
         public CarrinhoCliente CarrinhoCliente { get; set; }
 
         internal void AssociarCarrinho(Guid carrinhoId)
@@ -71,7 +73,7 @@ namespace Estudos.NSE.Carrinho.API.Model
                     .WithMessage(item => $"a quntidade miníma para o {item.Nome} é 1");
 
                 RuleFor(c => c.Quantidade)
-                    .LessThan(MaxQuantidadeItem)
+                    .LessThanOrEqualTo(MaxQuantidadeItem)
                     .WithMessage(item => $"a quantidade máxima do {item.Nome} é {MaxQuantidadeItem}");
 
                 RuleFor(c => c.Valor)

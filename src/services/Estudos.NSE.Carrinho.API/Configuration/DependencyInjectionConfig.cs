@@ -11,12 +11,13 @@ namespace Estudos.NSE.Carrinho.API.Configuration
     {
         public static void RegisterServices(this IServiceCollection services)
         {
-            services.AddScoped<CarrinhoDbContext>();
+           
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<IAspNetUser, AspNetUser>();
+            services.AddScoped<IAspNetUser, AspNetUser>();
+            services.AddScoped<CarrinhoDbContext>();
 
-            services.AddSingleton<ICarrinhoRepository, CarrinhoRepository>();
+            services.AddScoped<ICarrinhoRepository, CarrinhoRepository>();
         }
     }
 }

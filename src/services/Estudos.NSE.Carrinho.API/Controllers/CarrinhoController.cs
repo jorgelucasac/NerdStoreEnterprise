@@ -25,20 +25,20 @@ namespace Estudos.NSE.Carrinho.API.Controllers
         [HttpGet]
         public async Task<CarrinhoCliente> ObterCarrinho()
         {
-            return await _carrinhoRepository.ObterCarrinhoCliente(_user.ObterUserId()) ?? new CarrinhoCliente();
+            var carrinho = await _carrinhoRepository.ObterCarrinhoCliente(_user.ObterUserId()) ?? new CarrinhoCliente(_user.ObterUserId());
+            return carrinho;
         }
 
         [HttpPost]
         public async Task<IActionResult> AdicionarItemCarrinho(CarrinhoItem carrinhoItem)
         {
-
             var carrinho = await _carrinhoRepository.ObterCarrinhoCliente(_user.ObterUserId());
             if (carrinho is null)
                 await ManipularNovoCarinho(carrinhoItem);
             else
                 await ManipularCarinhoExistente(carrinho, carrinhoItem);
-            
-            ValidarCarrinho(carrinho);
+
+
             if (!OperacaoValida()) return CustomResponse();
 
             await PersistirDados();
@@ -46,8 +46,8 @@ namespace Estudos.NSE.Carrinho.API.Controllers
             return CustomResponse();
         }
 
-        [HttpPut]
-        public async Task<IActionResult> AtualizarItemCarrinho([FromRoute] Guid produtoId, CarrinhoItem item)
+        [HttpPut("{produtoId}")]
+        public async Task<IActionResult> AtualizarItemCarrinho(Guid produtoId, CarrinhoItem item)
         {
             var carrinho = await _carrinhoRepository.ObterCarrinhoCliente(_user.ObterUserId());
             var itemCarrinho = await ObterItemCarrinhoValidado(produtoId, carrinho, item);
@@ -65,8 +65,8 @@ namespace Estudos.NSE.Carrinho.API.Controllers
         }
 
 
-        [HttpDelete]
-        public async Task<IActionResult> RemoverItemCarrinho([FromRoute] Guid produtoId)
+        [HttpDelete("{produtoId}")]
+        public async Task<IActionResult> RemoverItemCarrinho(Guid produtoId)
         {
             var carrinho = await _carrinhoRepository.ObterCarrinhoCliente(_user.ObterUserId());
             var itemCarrinho = await ObterItemCarrinhoValidado(produtoId, carrinho);
@@ -89,6 +89,8 @@ namespace Estudos.NSE.Carrinho.API.Controllers
         {
             var carrinho = new CarrinhoCliente(_user.ObterUserId());
             carrinho.AdicionarItem(item);
+
+            ValidarCarrinho(carrinho);
             await _carrinhoRepository.Adicionar(carrinho);
         }
 
@@ -98,12 +100,12 @@ namespace Estudos.NSE.Carrinho.API.Controllers
             carrinho.AdicionarItem(item);
 
             if (carrinhoItemExiste)
-                _carrinhoRepository.AtualizarItem(carrinho.ObterProdutoPorId(item.Id));
+                _carrinhoRepository.AtualizarItem(carrinho.ObterProdutoPorId(item.ProdutoId));
             else
                 await _carrinhoRepository.AdicionarItem(item);
 
-
-            await _carrinhoRepository.Adicionar(carrinho);
+            ValidarCarrinho(carrinho);
+            _carrinhoRepository.Atualizar(carrinho);
         }
 
         private async Task<CarrinhoItem> ObterItemCarrinhoValidado(Guid produtoId, CarrinhoCliente carrinho, CarrinhoItem item = null)
