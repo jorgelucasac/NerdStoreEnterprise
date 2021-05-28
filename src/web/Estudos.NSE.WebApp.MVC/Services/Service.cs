@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Estudos.NSE.WebApp.MVC.Extensions;
+using Estudos.NSE.WebApp.MVC.Models;
 
 namespace Estudos.NSE.WebApp.MVC.Services
 {
@@ -44,6 +45,11 @@ namespace Estudos.NSE.WebApp.MVC.Services
             };
 
             return JsonSerializer.Deserialize<T>(await responseMessage.Content.ReadAsStringAsync(), options);
+        }
+
+        protected ResponseResult RetornoOk()
+        {
+            return new ResponseResult();
         }
     }
 }
