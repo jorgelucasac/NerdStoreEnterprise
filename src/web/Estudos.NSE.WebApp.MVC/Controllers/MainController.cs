@@ -13,7 +13,18 @@ namespace Estudos.NSE.WebApp.MVC.Controllers
             {
                 ModelState.AddModelError(string.Empty, mensagen);
             }
+
             return true;
+        }
+
+        protected void AdicionarErroValidacao(string mensagemErro)
+        {
+            ModelState.AddModelError(string.Empty, mensagemErro);
+        }
+
+        protected bool OperacaoValida()
+        {
+            return ModelState.ErrorCount == 0;
         }
     }
 }

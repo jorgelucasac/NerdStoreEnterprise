@@ -4,22 +4,9 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 
-namespace Estudos.NSE.WebApp.MVC.Extensions
+namespace Estudos.NSE.WebApi.Core.Usuario
 {
-    public interface IUser
-    {
-        string Name { get; }
-        Guid ObterUserId();
-        string ObterUserEmail();
-        string ObterUserToken();
-        bool EstaAutenticado();
-        bool PossuiRole(string role);
-        public bool PossuiRole(string[] roles);
-        IEnumerable<Claim> ObterClaims();
-        HttpContext ObterHttpContext();
-    }
-
-    public class AspNetUser : IUser
+    public class AspNetUser : IAspNetUser
     {
         private readonly IHttpContextAccessor _accessor;
 
@@ -67,42 +54,6 @@ namespace Estudos.NSE.WebApp.MVC.Extensions
         public HttpContext ObterHttpContext()
         {
             return _accessor.HttpContext;
-        }
-    }
-
-    public static class ClaimsPrincipalExtensions
-    {
-        public static string GetUserId(this ClaimsPrincipal principal)
-        {
-            if (principal == null)
-            {
-                throw new ArgumentException(nameof(principal));
-            }
-
-            var claim = principal.FindFirst("sub");
-            return claim?.Value;
-        }
-
-        public static string GetUserEmail(this ClaimsPrincipal principal)
-        {
-            if (principal == null)
-            {
-                throw new ArgumentException(nameof(principal));
-            }
-
-            var claim = principal.FindFirst("email");
-            return claim?.Value;
-        }
-
-        public static string GetUserToken(this ClaimsPrincipal principal)
-        {
-            if (principal == null)
-            {
-                throw new ArgumentException(nameof(principal));
-            }
-
-            var claim = principal.FindFirst("JWT");
-            return claim?.Value;
         }
     }
 }

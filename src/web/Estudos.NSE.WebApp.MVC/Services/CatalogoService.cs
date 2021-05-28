@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Estudos.NSE.WebApi.Core.Usuario;
 using Estudos.NSE.WebApp.MVC.Extensions;
 using Estudos.NSE.WebApp.MVC.Models;
 using Microsoft.Extensions.Options;
@@ -14,7 +15,7 @@ namespace Estudos.NSE.WebApp.MVC.Services
         private readonly HttpClient _httpClient;
         private const string Api = "/api/catalogo/";
 
-        public CatalogoService(HttpClient httpClient, IOptions<AppSettings> appSettings, IUser user)
+        public CatalogoService(HttpClient httpClient, IOptions<AppSettings> appSettings)
         {
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri(appSettings.Value.CatalogoUrl);
