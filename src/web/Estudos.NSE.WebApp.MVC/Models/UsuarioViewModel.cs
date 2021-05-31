@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Estudos.NSE.Core.Communication;
 using Estudos.NSE.WebApp.MVC.Extensions;
 
 namespace Estudos.NSE.WebApp.MVC.Models

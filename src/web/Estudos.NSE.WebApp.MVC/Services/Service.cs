@@ -4,8 +4,8 @@ using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Estudos.NSE.Core.Communication;
 using Estudos.NSE.WebApp.MVC.Extensions;
-using Estudos.NSE.WebApp.MVC.Models;
 
 namespace Estudos.NSE.WebApp.MVC.Services
 {

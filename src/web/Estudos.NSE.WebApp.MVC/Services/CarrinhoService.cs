@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Estudos.NSE.Core.Communication;
 using Estudos.NSE.WebApp.MVC.Extensions;
 using Estudos.NSE.WebApp.MVC.Models;
 using Microsoft.Extensions.Options;

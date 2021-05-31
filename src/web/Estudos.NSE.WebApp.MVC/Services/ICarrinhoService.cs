@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Estudos.NSE.Core.Communication;
 using Estudos.NSE.WebApp.MVC.Models;
 
 namespace Estudos.NSE.WebApp.MVC.Services

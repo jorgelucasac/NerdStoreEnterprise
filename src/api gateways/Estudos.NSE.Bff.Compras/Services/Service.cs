@@ -4,6 +4,7 @@ using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Estudos.NSE.Core.Communication;
 
 namespace Estudos.NSE.Bff.Compras.Services
 {
@@ -35,6 +36,10 @@ namespace Estudos.NSE.Bff.Compras.Services
 
             return JsonSerializer.Deserialize<T>(await responseMessage.Content.ReadAsStringAsync(), options);
         }
-        
+
+        protected ResponseResult RetornoOk()
+        {
+            return new ResponseResult();
+        }
     }
 }

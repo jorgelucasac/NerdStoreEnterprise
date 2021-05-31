@@ -1,4 +1,4 @@
-﻿using Estudos.NSE.WebApp.MVC.Models;
+﻿using Estudos.NSE.Core.Communication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Estudos.NSE.WebApp.MVC.Controllers
