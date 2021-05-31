@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Estudos.NSE.Bff.Compras.Services;
 using Estudos.NSE.WebApi.Core.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,17 @@ namespace Estudos.NSE.Bff.Compras.Controllers
     [Route("api/compras")]
     public class CarrinhoController : MainController
     {
+        private readonly ICarrinhoService _carrinhoService;
+        private readonly ICatalogoService _catalogoService;
+
+        public CarrinhoController(
+            ICarrinhoService carrinhoService,
+            ICatalogoService catalogoService)
+        {
+            _carrinhoService = carrinhoService;
+            _catalogoService = catalogoService;
+        }
+
         [HttpGet]
         [Route("carrinho")]
         public async Task<IActionResult> Index()
