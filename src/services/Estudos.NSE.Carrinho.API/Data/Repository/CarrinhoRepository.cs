@@ -55,7 +55,9 @@ namespace Estudos.NSE.Carrinho.API.Data.Repository
 
         public async Task<int> ObterQuantidadeItensCarrinho(Guid clienteId)
         {
-            return await _context.CarrinhoItens.CountAsync(i => i.CarrinhoCliente.ClienteId == clienteId);
+            return await _context.CarrinhoItens.
+                Where(i => i.CarrinhoCliente.ClienteId == clienteId)
+                .SumAsync(a=> a.Quantidade);
         }
 
         public async Task<bool> PossuiCarrinho(Guid clienteId)

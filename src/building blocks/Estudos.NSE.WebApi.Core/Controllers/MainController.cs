@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Estudos.NSE.Core.Communication;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -39,6 +40,24 @@ namespace Estudos.NSE.WebApi.Core.Controllers
 
             }
             return CustomResponse();
+        }
+
+        protected ActionResult CustomResponse(ResponseResult result)
+        {
+            ResponsePossuiErros(result);
+            return CustomResponse();
+        }
+
+        protected bool ResponsePossuiErros(ResponseResult result)
+        {
+            if (result == null) return false;
+
+            foreach (var mensagen in result.Errors.Mensagens)
+            {
+                ModelState.AddModelError(string.Empty, mensagen);
+            }
+
+            return true;
         }
 
         protected bool OperacaoValida() => !Erros.Any();
