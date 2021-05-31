@@ -8,21 +8,21 @@ using Microsoft.Extensions.Options;
 
 namespace Estudos.NSE.WebApp.MVC.Services
 {
-    public class CarrinhoService : Service, ICarrinhoService
+    public class ComprasBffService : Service, IComprasBffService
     {
         private readonly HttpClient _httpClient;
-        private const string Api = "/api/carrinho/";
+        private const string Api = "/api/compras/";
 
-        public CarrinhoService(HttpClient httpClient, IOptions<AppSettings> options)
+        public ComprasBffService(HttpClient httpClient, IOptions<AppSettings> options)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri(options.Value.CarrinhoUrl);
+            _httpClient.BaseAddress = new Uri(options.Value.ComprasBffUrl);
         }
 
 
         public async Task<CarrinhoViewModel> ObterCarrinho()
         {
-            var response = await _httpClient.GetAsync(Api);
+            var response = await _httpClient.GetAsync($"{Api}carrinho");
 
             TratarErrosResponse(response);
 
@@ -31,17 +31,17 @@ namespace Estudos.NSE.WebApp.MVC.Services
 
         public async Task<int> ObterQuantidadeItensCarrinho()
         {
-            var response = await _httpClient.GetAsync($"{Api}quantidade-itens-carrinho");
+            var response = await _httpClient.GetAsync($"{Api}carrinho-quantidade");
 
             TratarErrosResponse(response);
 
             return await DeserializarObjetoResponse<int>(response);
         }
 
-        public async Task<ResponseResult> AdicionarItemCarrinho(ItemProdutoViewModel produto)
+        public async Task<ResponseResult> AdicionarItemCarrinho(ItemCarrinhoViewModel carrinho)
         {
-            var produtoContent = PrepararConteudo(produto);
-            var response = await _httpClient.PostAsync(Api, produtoContent);
+            var produtoContent = PrepararConteudo(carrinho);
+            var response = await _httpClient.PostAsync($"{Api}carrinho/items", produtoContent);
 
             if (!TratarErrosResponse(response))
                 return await DeserializarObjetoResponse<ResponseResult>(response);
@@ -49,10 +49,10 @@ namespace Estudos.NSE.WebApp.MVC.Services
             return RetornoOk();
         }
 
-        public async Task<ResponseResult> AtualizarItemCarrinho(Guid produtoId, ItemProdutoViewModel produto)
+        public async Task<ResponseResult> AtualizarItemCarrinho(Guid produtoId, ItemCarrinhoViewModel carrinho)
         {
-            var produtoContent = PrepararConteudo(produto);
-            var response = await _httpClient.PutAsync($"{Api}{produtoId}", produtoContent);
+            var produtoContent = PrepararConteudo(carrinho);
+            var response = await _httpClient.PutAsync($"{Api}carrinho/items/{produtoId}", produtoContent);
 
             if (!TratarErrosResponse(response))
                 return await DeserializarObjetoResponse<ResponseResult>(response);
@@ -62,7 +62,7 @@ namespace Estudos.NSE.WebApp.MVC.Services
 
         public async Task<ResponseResult> RemoverItemCarrinho(Guid produtoId)
         {
-            var response = await _httpClient.DeleteAsync($"{Api}{produtoId}");
+            var response = await _httpClient.DeleteAsync($"{Api}carrinho/items/{produtoId}");
 
             if (!TratarErrosResponse(response))
                 return await DeserializarObjetoResponse<ResponseResult>(response);
