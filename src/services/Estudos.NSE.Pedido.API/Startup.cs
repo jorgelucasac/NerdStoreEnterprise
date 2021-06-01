@@ -1,5 +1,6 @@
 using Estudos.NSE.Pedidos.API.Configuration;
 using Estudos.NSE.WebApi.Core.Identidade;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -33,6 +34,8 @@ namespace Estudos.NSE.Pedidos.API
             services.AddApiConfiguration(Configuration);
 
             services.AddJwtConfiguration(Configuration);
+
+            services.AddMediatR(typeof(Startup));
 
             services.RegisterServices();
 

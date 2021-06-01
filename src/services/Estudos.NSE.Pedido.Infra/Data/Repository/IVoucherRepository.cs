@@ -1,5 +1,7 @@
-﻿using Estudos.NSE.Core.Data;
+﻿using System.Threading.Tasks;
+using Estudos.NSE.Core.Data;
 using Estudos.NSE.Pedidos.Domain.Vouchers;
+using Microsoft.EntityFrameworkCore;
 
 namespace Estudos.NSE.Pedidos.Infra.Data.Repository
 {
@@ -14,8 +16,10 @@ namespace Estudos.NSE.Pedidos.Infra.Data.Repository
 
         public IUnitOfWork UnitOfWork => _context;
 
-
-
+        public async Task<Voucher> ObterPorCodigo(string codigo)
+        {
+            return await _context.Vouchers.FirstOrDefaultAsync(v => v.Codigo == codigo);
+        }
 
 
         public void Dispose()

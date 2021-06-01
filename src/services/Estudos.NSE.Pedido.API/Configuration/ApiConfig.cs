@@ -14,7 +14,7 @@ namespace Estudos.NSE.Pedidos.API.Configuration
         public static void AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<PedidosDbContext>(opt =>
-                opt.UseSqlServer("DefaultConnection"));
+                opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllers();
 

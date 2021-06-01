@@ -4,6 +4,7 @@ using Estudos.NSE.Core.Data;
 using Estudos.NSE.Core.DomainObjects;
 using Estudos.NSE.Core.Mediator;
 using Estudos.NSE.Core.Messages;
+using Estudos.NSE.Pedidos.Domain.Vouchers;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,7 @@ namespace Estudos.NSE.Pedidos.Infra.Data
             _mediatorHandler = mediatorHandler;
         }
 
+        public DbSet<Voucher> Vouchers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(
