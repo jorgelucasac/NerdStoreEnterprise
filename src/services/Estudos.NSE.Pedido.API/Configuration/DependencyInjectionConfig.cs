@@ -1,4 +1,5 @@
 ﻿using Estudos.NSE.Core.Mediator;
+using Estudos.NSE.Pedidos.API.Application.Queries;
 using Estudos.NSE.Pedidos.Domain.Vouchers;
 using Estudos.NSE.Pedidos.Infra.Data;
 using Estudos.NSE.Pedidos.Infra.Data.Repository;
@@ -18,11 +19,12 @@ namespace Estudos.NSE.Pedidos.API.Configuration
 
             // Application
             services.AddScoped<IMediatorHandler, MediatorHandler>();
+            services.AddScoped<IVoucherQuerie, VoucherQuerie>();
 
             // Data
             services.AddScoped<IVoucherRepository, VoucherRepository>();
             services.AddScoped<PedidosDbContext>();
-           
+
         }
     }
 }

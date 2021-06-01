@@ -15,6 +15,7 @@ namespace Estudos.NSE.Bff.Compras.Services
         Task<ResponseResult> AdicionarItemCarrinho(ItemCarrinhoDto produto);
         Task<ResponseResult> AtualizarItemCarrinho(Guid produtoId, ItemCarrinhoDto carrinho);
         Task<ResponseResult> RemoverItemCarrinho(Guid produtoId);
+        Task<ResponseResult> AplicarVoucherCarrinho(VoucherDto voucher);
     }
 
     public class CarrinhoService : Service, ICarrinhoService
@@ -71,6 +72,17 @@ namespace Estudos.NSE.Bff.Compras.Services
         public async Task<ResponseResult> RemoverItemCarrinho(Guid produtoId)
         {
             var response = await _httpClient.DeleteAsync($"{Api}{produtoId}");
+
+            if (!TratarErrosResponse(response))
+                return await DeserializarObjetoResponse<ResponseResult>(response);
+
+            return RetornoOk();
+        }
+
+        public async Task<ResponseResult> AplicarVoucherCarrinho(VoucherDto voucher)
+        {
+            var voucherContent = PrepararConteudo(voucher);
+            var response = await _httpClient.PostAsync($"{Api}aplicar-voucher", voucherContent);
 
             if (!TratarErrosResponse(response))
                 return await DeserializarObjetoResponse<ResponseResult>(response);
