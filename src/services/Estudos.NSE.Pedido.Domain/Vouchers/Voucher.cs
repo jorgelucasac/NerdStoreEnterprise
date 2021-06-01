@@ -1,5 +1,6 @@
 ﻿using System;
 using Estudos.NSE.Core.DomainObjects;
+using Estudos.NSE.Pedidos.Domain.Vouchers.Specs;
 
 namespace Estudos.NSE.Pedidos.Domain.Vouchers
 {
@@ -15,5 +16,21 @@ namespace Estudos.NSE.Pedidos.Domain.Vouchers
         public DateTime DataValidade { get; private set; }
         public bool Ativo { get; private set; }
         public bool Utilizado { get; private set; }
+
+        public bool EstaValidoParaUtilizacao()
+        {
+            var spec = new VoucherAtivoSpecification()
+                .And(new VoucherAtivoSpecification())
+                .And(new VoucherQuantidadeSpecification());
+
+            return spec.IsSatisfiedBy(this);
+        }
+
+        public void MarcarComoUtilizado()
+        {
+            Ativo = false;
+            Utilizado = true;
+            Quantidade = 0;
+        }
     }
 }
