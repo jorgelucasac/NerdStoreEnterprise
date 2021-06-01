@@ -34,7 +34,6 @@ namespace Estudos.NSE.Carrinho.API.Controllers
             return await _carrinhoRepository.ObterQuantidadeItensCarrinho(_user.ObterUserId());
         }
 
-
         [HttpPost]
         public async Task<IActionResult> AdicionarItemCarrinho(CarrinhoItem carrinhoItem)
         {
@@ -70,7 +69,6 @@ namespace Estudos.NSE.Carrinho.API.Controllers
             return CustomResponse();
         }
 
-
         [HttpDelete("{produtoId}")]
         public async Task<IActionResult> RemoverItemCarrinho(Guid produtoId)
         {
@@ -83,6 +81,20 @@ namespace Estudos.NSE.Carrinho.API.Controllers
             carrinho.RemoverItem(itemCarrinho);
 
             _carrinhoRepository.RemoverItem(itemCarrinho);
+            _carrinhoRepository.Atualizar(carrinho);
+
+            await PersistirDados();
+            return CustomResponse();
+        }
+
+        [HttpPost]
+        [Route("aplicar-voucher")]
+        public async Task<IActionResult> AplicarVoucher(Voucher voucher)
+        {
+            var carrinho = await _carrinhoRepository.ObterCarrinhoCliente(_user.ObterUserId());
+
+            carrinho.AplicarVoucher(voucher);
+
             _carrinhoRepository.Atualizar(carrinho);
 
             await PersistirDados();

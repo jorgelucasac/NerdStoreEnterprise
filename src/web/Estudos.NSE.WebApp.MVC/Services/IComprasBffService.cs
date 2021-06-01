@@ -12,5 +12,6 @@ namespace Estudos.NSE.WebApp.MVC.Services
         Task<ResponseResult> AdicionarItemCarrinho(ItemCarrinhoViewModel carrinho);
         Task<ResponseResult> AtualizarItemCarrinho(Guid produtoId, ItemCarrinhoViewModel carrinho);
         Task<ResponseResult> RemoverItemCarrinho(Guid produtoId);
+        Task<ResponseResult> AplicarVoucherCarrinho(string voucherCodigo);
     }
 }

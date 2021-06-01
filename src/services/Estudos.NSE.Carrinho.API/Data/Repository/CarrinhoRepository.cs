@@ -25,7 +25,7 @@ namespace Estudos.NSE.Carrinho.API.Data.Repository
         public async Task<CarrinhoItem> ObterCarrinhoItem(Guid carrinhoId, Guid produtoId)
         {
             return await _context.CarrinhoItens
-                .FirstOrDefaultAsync(item => item.CarrinhoId == carrinhoId && produtoId == produtoId);
+                .FirstOrDefaultAsync(item => item.CarrinhoId == carrinhoId && item.ProdutoId == produtoId);
         }
 
         public async Task Adicionar(CarrinhoCliente carrinhoCliente)
@@ -57,7 +57,7 @@ namespace Estudos.NSE.Carrinho.API.Data.Repository
         {
             return await _context.CarrinhoItens.
                 Where(i => i.CarrinhoCliente.ClienteId == clienteId)
-                .SumAsync(a=> a.Quantidade);
+                .SumAsync(a => a.Quantidade);
         }
 
         public async Task<bool> PossuiCarrinho(Guid clienteId)

@@ -69,5 +69,16 @@ namespace Estudos.NSE.WebApp.MVC.Services
 
             return RetornoOk();
         }
+
+        public async Task<ResponseResult> AplicarVoucherCarrinho(string voucherCodigo)
+        {
+            var voucherCodigoContent = PrepararConteudo(voucherCodigo);
+            var response = await _httpClient.PostAsync($"{Api}carrinho/aplicar-voucher", voucherCodigoContent);
+
+            if (!TratarErrosResponse(response))
+                return await DeserializarObjetoResponse<ResponseResult>(response);
+
+            return RetornoOk();
+        }
     }
 }
