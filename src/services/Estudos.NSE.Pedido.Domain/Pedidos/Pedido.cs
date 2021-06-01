@@ -25,6 +25,20 @@ namespace Estudos.NSE.Pedidos.Domain.Pedidos
         // EF Rel.
         public Voucher Voucher { get; private set; }
 
+
+
+        public Pedido(Guid clienteId, decimal valorTotal, List<PedidoItem> pedidoItems,
+            bool voucherUtilizado = false, decimal desconto = 0, Guid? voucherId = null)
+        {
+            ClienteId = clienteId;
+            ValorTotal = valorTotal;
+            _pedidoItems = pedidoItems;
+
+            Desconto = desconto;
+            VoucherUtilizado = voucherUtilizado;
+            VoucherId = voucherId;
+        }
+
         // EF ctor
         protected Pedido() { }
 

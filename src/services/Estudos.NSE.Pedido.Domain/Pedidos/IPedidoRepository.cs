@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Estudos.NSE.Core.Data;
 
 namespace Estudos.NSE.Pedidos.Domain.Pedidos
 {
-    public interface IPedidoRepository
+    public interface IPedidoRepository: IRepository<Pedido>
     {
         Task<Pedido> ObterPorId(Guid id);
         Task<IEnumerable<Pedido>> ObterListaPorClienteId(Guid clienteId);
