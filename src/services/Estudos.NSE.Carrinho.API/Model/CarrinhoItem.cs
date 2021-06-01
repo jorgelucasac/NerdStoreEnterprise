@@ -8,7 +8,7 @@ namespace Estudos.NSE.Carrinho.API.Model
 {
     public class CarrinhoItem
     {
-        internal const int MaxQuantidadeItem = 5;
+      
         public CarrinhoItem()
         {
             Id = Guid.NewGuid();
@@ -73,8 +73,8 @@ namespace Estudos.NSE.Carrinho.API.Model
                     .WithMessage(item => $"a quntidade miníma para o {item.Nome} é 1");
 
                 RuleFor(c => c.Quantidade)
-                    .LessThanOrEqualTo(MaxQuantidadeItem)
-                    .WithMessage(item => $"a quantidade máxima do {item.Nome} é {MaxQuantidadeItem}");
+                    .LessThanOrEqualTo(CarrinhoCliente.MaxQuantidadeItem)
+                    .WithMessage(item => $"a quantidade máxima do {item.Nome} é {CarrinhoCliente.MaxQuantidadeItem}");
 
                 RuleFor(c => c.Valor)
                     .GreaterThan(0)
