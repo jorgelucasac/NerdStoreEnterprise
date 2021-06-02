@@ -40,6 +40,8 @@ namespace Estudos.NSE.Pedidos.API
             services.RegisterServices();
 
             services.AddSwaggerConfiguration();
+
+            services.AddMessageBusConfiguration(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

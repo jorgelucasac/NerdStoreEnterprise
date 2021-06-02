@@ -38,6 +38,8 @@ namespace Estudos.NSE.Carrinho.API
             services.RegisterServices();
 
             services.AddJwtConfiguration(Configuration);
+
+            services.AddMessageBusConfiguration(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

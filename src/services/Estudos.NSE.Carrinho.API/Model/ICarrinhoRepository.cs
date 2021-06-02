@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Estudos.NSE.Carrinho.API.Model
@@ -14,7 +15,9 @@ namespace Estudos.NSE.Carrinho.API.Model
         void Atualizar(CarrinhoCliente carrinhoCliente);
         void AtualizarItem(CarrinhoItem carrinhoItem);
 
+        void Remover(CarrinhoCliente carrinho);
         void RemoverItem(CarrinhoItem carrinhoItem);
+        void RemoverItens(IList<CarrinhoItem> itens);
 
         Task<int> ObterQuantidadeItensCarrinho(Guid clienteId);
         Task<bool> PossuiCarrinho(Guid clienteId);

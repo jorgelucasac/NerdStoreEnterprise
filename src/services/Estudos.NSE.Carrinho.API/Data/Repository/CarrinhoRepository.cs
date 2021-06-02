@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Estudos.NSE.Carrinho.API.Model;
@@ -48,9 +49,19 @@ namespace Estudos.NSE.Carrinho.API.Data.Repository
             _context.CarrinhoItens.Update(carrinhoItem);
         }
 
+        public void Remover(CarrinhoCliente carrinho)
+        {
+            _context.CarrinhoCliente.Remove(carrinho);
+        }
+
         public void RemoverItem(CarrinhoItem carrinhoItem)
         {
             _context.CarrinhoItens.Remove(carrinhoItem);
+        }
+
+        public void RemoverItens(IList<CarrinhoItem> itens)
+        {
+           _context.CarrinhoItens.RemoveRange(itens);
         }
 
         public async Task<int> ObterQuantidadeItensCarrinho(Guid clienteId)
