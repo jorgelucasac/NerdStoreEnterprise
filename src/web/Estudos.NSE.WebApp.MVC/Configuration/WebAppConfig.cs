@@ -22,10 +22,10 @@ namespace Estudos.NSE.WebApp.MVC.Configuration
 
             if (env.IsDevelopment())
             {
-                //app.UseDeveloperExceptionPage();
-                app.UseExceptionHandler("/erro/500");
-                app.UseStatusCodePagesWithRedirects("/erro/{0}");
-                app.UseHsts();
+                app.UseDeveloperExceptionPage();
+                //app.UseExceptionHandler("/erro/500");
+                //app.UseStatusCodePagesWithRedirects("/erro/{0}");
+                //app.UseHsts();
             }
             else
             {

@@ -113,7 +113,7 @@ namespace Estudos.NSE.Carrinho.API.Migrations
                     b.HasOne("Estudos.NSE.Carrinho.API.Model.CarrinhoCliente", "CarrinhoCliente")
                         .WithMany("Itens")
                         .HasForeignKey("CarrinhoId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

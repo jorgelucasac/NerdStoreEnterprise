@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Validation\" />
     <Folder Include="Utils\" />
   </ItemGroup>
 

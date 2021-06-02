@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Estudos.NSE.Core.Validation;
 
 namespace Estudos.NSE.WebApp.MVC.Models
 {
@@ -36,6 +37,7 @@ namespace Estudos.NSE.WebApp.MVC.Models
         [RegularExpression(@"(0[1-9]|1[0-2])\/[0-9]{2}", ErrorMessage = "O vencimento deve estar no padrão MM/AA")]
         [Required(ErrorMessage = "Informe o vencimento")]
         [DisplayName("Data de Vencimento MM/AA")]
+        [CartaoExpiracao(ErrorMessage = "Cartão Expirado")]
         public string ExpiracaoCartao { get; set; }
 
         [Required(ErrorMessage = "Informe o código de segurança")]

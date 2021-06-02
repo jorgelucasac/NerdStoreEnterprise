@@ -1,4 +1,5 @@
-﻿using Estudos.NSE.Core.Communication;
+﻿using System.Linq;
+using Estudos.NSE.Core.Communication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Estudos.NSE.WebApp.MVC.Controllers
@@ -7,14 +8,15 @@ namespace Estudos.NSE.WebApp.MVC.Controllers
     {
         protected bool ResponsePossuiErros(ResponseResult result)
         {
-            if (result == null) return false;
+            if (result == null || !result.Errors.Mensagens.Any()) return false;
 
-            foreach (var mensagen in result.Errors.Mensagens)
+            foreach (var mensagem in result.Errors.Mensagens)
             {
-                ModelState.AddModelError(string.Empty, mensagen);
+                ModelState.AddModelError(string.Empty, mensagem);
             }
 
             return true;
+
         }
 
         protected void AdicionarErroValidacao(string mensagemErro)

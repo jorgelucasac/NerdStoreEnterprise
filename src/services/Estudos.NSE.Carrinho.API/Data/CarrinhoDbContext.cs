@@ -32,8 +32,8 @@ namespace Estudos.NSE.Carrinho.API.Data
                 .HasIndex(c => c.ClienteId)
                 .HasName("IDX_Cliente");
 
+            modelBuilder.Entity<CarrinhoCliente>().Ignore(c => c.Voucher);
             modelBuilder.Entity<CarrinhoCliente>()
-                .Ignore(c => c.Voucher)
                 .OwnsOne(c => c.Voucher, v =>
                 {
                     v.Property(vc => vc.Codigo)
@@ -57,7 +57,7 @@ namespace Estudos.NSE.Carrinho.API.Data
 
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
-                relationship.DeleteBehavior = DeleteBehavior.NoAction;
+                relationship.DeleteBehavior = DeleteBehavior.Cascade;
             }
         }
     }

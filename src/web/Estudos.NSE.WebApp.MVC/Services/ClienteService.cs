@@ -12,6 +12,7 @@ namespace Estudos.NSE.WebApp.MVC.Services
     public class ClienteService : Service, IClienteService
     {
         private readonly HttpClient _httpClient;
+        private const string Api = "/api/cliente/";
 
         public ClienteService(HttpClient httpClient, IOptions<AppSettings> settings)
         {
@@ -21,7 +22,7 @@ namespace Estudos.NSE.WebApp.MVC.Services
 
         public async Task<EnderecoViewModel> ObterEndereco()
         {
-            var response = await _httpClient.GetAsync("/cliente/endereco/");
+            var response = await _httpClient.GetAsync($"{Api}endereco");
 
             if (response.StatusCode == HttpStatusCode.NotFound) return null;
 
@@ -34,7 +35,7 @@ namespace Estudos.NSE.WebApp.MVC.Services
         {
             var enderecoContent = PrepararConteudo(endereco);
 
-            var response = await _httpClient.PostAsync("/cliente/endereco/", enderecoContent);
+            var response = await _httpClient.PostAsync($"{Api}endereco", enderecoContent);
 
             if (!TratarErrosResponse(response)) return await DeserializarObjetoResponse<ResponseResult>(response);
 

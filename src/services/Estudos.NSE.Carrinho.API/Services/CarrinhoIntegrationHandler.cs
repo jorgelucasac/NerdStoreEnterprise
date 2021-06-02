@@ -9,7 +9,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace Estudos.NSE.Carrinho.API.Services
 {
-    public class CarrinhoIntegrationHandler: BackgroundService
+    public class CarrinhoIntegrationHandler : BackgroundService
     {
         private readonly IMessageBus _messageBus;
         private readonly IServiceProvider _serviceProvider;
@@ -29,7 +29,7 @@ namespace Estudos.NSE.Carrinho.API.Services
         private void SetSubscribers()
         {
             _messageBus.SubscribeAsync<PedidoRealizadoIntegrationEvent>("PedidoRealizado",
-            async request=> await ApagarCarrinho(request));
+            async request => await ApagarCarrinho(request));
             _messageBus.AdvancedBus.Connected += OnConnect;
 
         }
@@ -45,12 +45,14 @@ namespace Estudos.NSE.Carrinho.API.Services
 
             var carrinho = await carrinhoRepository.ObterCarrinhoCliente(message.ClienteId);
 
+
             if (carrinho != null)
             {
-                carrinhoRepository.RemoverItens(carrinho.Itens);
+                await carrinhoRepository.RemoverItens(carrinho.Itens);
                 carrinhoRepository.Remover(carrinho);
                 await carrinhoRepository.SaveChangesAsync();
             }
+
         }
     }
 }

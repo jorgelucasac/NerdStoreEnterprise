@@ -59,9 +59,10 @@ namespace Estudos.NSE.Carrinho.API.Data.Repository
             _context.CarrinhoItens.Remove(carrinhoItem);
         }
 
-        public void RemoverItens(IList<CarrinhoItem> itens)
+        public async Task RemoverItens(IList<CarrinhoItem> itens)
         {
            _context.CarrinhoItens.RemoveRange(itens);
+           await SaveChangesAsync();
         }
 
         public async Task<int> ObterQuantidadeItensCarrinho(Guid clienteId)

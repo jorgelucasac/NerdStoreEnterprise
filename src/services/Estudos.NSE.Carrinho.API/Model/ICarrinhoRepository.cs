@@ -17,7 +17,7 @@ namespace Estudos.NSE.Carrinho.API.Model
 
         void Remover(CarrinhoCliente carrinho);
         void RemoverItem(CarrinhoItem carrinhoItem);
-        void RemoverItens(IList<CarrinhoItem> itens);
+        Task RemoverItens(IList<CarrinhoItem> itens);
 
         Task<int> ObterQuantidadeItensCarrinho(Guid clienteId);
         Task<bool> PossuiCarrinho(Guid clienteId);

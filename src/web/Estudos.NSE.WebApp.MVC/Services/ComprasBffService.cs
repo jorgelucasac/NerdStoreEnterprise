@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Estudos.NSE.Core.Communication;
@@ -112,6 +113,35 @@ namespace Estudos.NSE.WebApp.MVC.Services
             }
 
             return pedido;
+        }
+
+        public async Task<ResponseResult> FinalizarPedido(PedidoTransacaoViewModel pedidoTransacao)
+        {
+            var pedidoContent = PrepararConteudo(pedidoTransacao);
+
+            var response = await _httpClient.PostAsync($"{Api}pedido", pedidoContent);
+
+            if (!TratarErrosResponse(response)) return await DeserializarObjetoResponse<ResponseResult>(response);
+
+            return RetornoOk();
+        }
+
+        public async Task<PedidoViewModel> ObterUltimoPedido()
+        {
+            var response = await _httpClient.GetAsync($"{Api}pedido/ultimo");
+
+            TratarErrosResponse(response);
+
+            return await DeserializarObjetoResponse<PedidoViewModel>(response);
+        }
+
+        public async Task<IEnumerable<PedidoViewModel>> ObterListaPorClienteId()
+        {
+            var response = await _httpClient.GetAsync($"{Api}pedido/lista-cliente/");
+
+            TratarErrosResponse(response);
+
+            return await DeserializarObjetoResponse<IEnumerable<PedidoViewModel>>(response);
         }
 
         #endregion
