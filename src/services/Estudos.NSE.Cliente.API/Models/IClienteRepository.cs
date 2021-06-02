@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Estudos.NSE.Core.Data;
 
@@ -11,5 +12,8 @@ namespace Estudos.NSE.Clientes.API.Models
         Task<IEnumerable<Cliente>> ObterTodos();
         Task<Cliente> ObterPorCpf(string cpf);
         Task<bool> CpfJaUtilizado(string cpf);
+
+        void AdicionarEndereco(Endereco endereco);
+        Task<Endereco> ObterEnderecoPorId(Guid id);
     }
 }
