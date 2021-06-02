@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using Estudos.NSE.Core.Data;
@@ -43,6 +44,11 @@ namespace Estudos.NSE.Pedidos.Infra.Data.Repository
         public void Atualizar(Pedido pedido)
         {
             _context.Pedidos.Update(pedido);
+        }
+
+        public DbConnection ObterConexao()
+        {
+            return _context.Database.GetDbConnection();
         }
 
 
