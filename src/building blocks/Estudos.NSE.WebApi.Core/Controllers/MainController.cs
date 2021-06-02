@@ -26,8 +26,11 @@ namespace Estudos.NSE.WebApi.Core.Controllers
 
         protected ActionResult CustomResponse(ModelStateDictionary modelState)
         {
-            var erros = modelState.Values.SelectMany(e => e.Errors).ToList();
-            erros.ForEach(erro => AdicionarErroProcessamento(erro.ErrorMessage));
+            var erros = modelState.Values.SelectMany(e => e.Errors);
+            foreach (var erro in erros)
+            {
+                AdicionarErroProcessamento(erro.ErrorMessage);
+            }
 
             return CustomResponse();
         }
@@ -37,8 +40,8 @@ namespace Estudos.NSE.WebApi.Core.Controllers
             foreach (var erro in validationResult.Errors)
             {
                 AdicionarErroProcessamento(erro.ErrorMessage);
-
             }
+
             return CustomResponse();
         }
 
@@ -48,13 +51,13 @@ namespace Estudos.NSE.WebApi.Core.Controllers
             return CustomResponse();
         }
 
-        protected bool ResponsePossuiErros(ResponseResult result)
+        protected bool ResponsePossuiErros(ResponseResult resposta)
         {
-            if (result == null) return false;
+            if (resposta == null || !resposta.Errors.Mensagens.Any()) return false;
 
-            foreach (var mensagen in result.Errors.Mensagens)
+            foreach (var mensagem in resposta.Errors.Mensagens)
             {
-                ModelState.AddModelError(string.Empty, mensagen);
+                AdicionarErroProcessamento(mensagem);
             }
 
             return true;
