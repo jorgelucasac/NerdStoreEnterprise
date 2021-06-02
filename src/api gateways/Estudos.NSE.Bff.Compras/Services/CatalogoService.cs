@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Estudos.NSE.Bff.Compras.Extensions;
@@ -10,6 +11,7 @@ namespace Estudos.NSE.Bff.Compras.Services
     public interface ICatalogoService
     {
         Task<ItemProdutoDto> ObterPorId(Guid id);
+        Task<IEnumerable<ItemProdutoDto>> ObterItens(IEnumerable<Guid> @select);
     }
 
     public class CatalogoService : Service, ICatalogoService
@@ -30,6 +32,17 @@ namespace Estudos.NSE.Bff.Compras.Services
             TratarErrosResponse(response);
 
             return await DeserializarObjetoResponse<ItemProdutoDto>(response);
+        }
+
+        public async Task<IEnumerable<ItemProdutoDto>> ObterItens(IEnumerable<Guid> ids)
+        {
+            var idsRequest = string.Join(",", ids);
+
+            var response = await _httpClient.GetAsync($"{Api}produtos/lista/{idsRequest}/");
+
+            TratarErrosResponse(response);
+
+            return await DeserializarObjetoResponse<IEnumerable<ItemProdutoDto>>(response);
         }
     }
 }

@@ -36,6 +36,17 @@ namespace Estudos.NSE.Bff.Compras.Configuration
                 .AddTransientHttpErrorPolicy(
                     p => p.CircuitBreakerAsync(PollyExtensions.Tentativas, TimeSpan.FromSeconds(PollyExtensions.DuracaoBreaker)));
 
+            services.AddHttpClient<IClienteService, ClienteService>()
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AddPolicyHandler(PollyExtensions.EsperarTentar())
+                .AddTransientHttpErrorPolicy(
+                    p => p.CircuitBreakerAsync(PollyExtensions.Tentativas, TimeSpan.FromSeconds(PollyExtensions.DuracaoBreaker)));
+
+            services.AddHttpClient<IPagamentoService, PagamentoService>()
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AddPolicyHandler(PollyExtensions.EsperarTentar())
+                .AddTransientHttpErrorPolicy(
+                    p => p.CircuitBreakerAsync(PollyExtensions.Tentativas, TimeSpan.FromSeconds(PollyExtensions.DuracaoBreaker)));
         }
     }
 }
