@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Pedidos\" />
-    <Folder Include="Vouchers\Specs\" />
   </ItemGroup>
 
   <ItemGroup>

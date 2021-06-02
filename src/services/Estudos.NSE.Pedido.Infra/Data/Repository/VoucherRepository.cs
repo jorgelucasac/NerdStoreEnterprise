@@ -21,6 +21,11 @@ namespace Estudos.NSE.Pedidos.Infra.Data.Repository
             return await _context.Vouchers.FirstOrDefaultAsync(v => v.Codigo == codigo);
         }
 
+        public void Atualizar(Voucher voucher)
+        {
+            _context.Vouchers.Update(voucher);
+        }
+
 
         public void Dispose()
         {
