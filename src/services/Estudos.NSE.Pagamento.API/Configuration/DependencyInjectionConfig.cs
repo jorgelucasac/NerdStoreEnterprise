@@ -1,5 +1,6 @@
 ﻿using Estudos.NSE.Core.Mediator;
 using Estudos.NSE.Pagamentos.API.Data;
+using Estudos.NSE.Pagamentos.API.Data.Repository;
 using Estudos.NSE.Pagamentos.API.Facade;
 using Estudos.NSE.Pagamentos.API.Models;
 using Estudos.NSE.Pagamentos.API.Services;
@@ -18,11 +19,11 @@ namespace Estudos.NSE.Pagamentos.API.Configuration
             services.AddScoped<IAspNetUser, AspNetUser>();
 
             services.AddScoped<IPagamentoService, PagamentoService>();
-            services.AddScoped<IPagamentoFacade, IPagamentoFacade>();
+            services.AddScoped<IPagamentoFacade, PagamentoCartaoCreditoFacade>();
 
 
             // Data
-            services.AddScoped<IPagamentoRepository, IPagamentoRepository>();
+            services.AddScoped<IPagamentoRepository, PagamentoRepository>();
             services.AddScoped<PagamentosDbContext>();
 
         }

@@ -14,7 +14,7 @@
                 <div class="col-md-12" style="padding-bottom: 35px">
                     <article class="card">
                         <header class="card-header">
-                            <b class="d-inline-block mr-3">Pedido ID: #@pedido.Codigo @pedido.Status</b>
+                            <b class="d-inline-block mr-3">Pedido ID: #@pedido.Codigo @Html.Raw(this.ExibeStatus(pedido.Status))</b>
                             <span>@pedido.Data.ToLongDateString()</span>
                         </header>
                         <div class="card-body">
