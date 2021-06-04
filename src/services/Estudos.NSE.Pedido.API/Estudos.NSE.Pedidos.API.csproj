@@ -19,6 +19,7 @@
   <ItemGroup>
     <Folder Include="Application\Commands\" />
     <Folder Include="Controllers\" />
+    <Folder Include="Service\" />
   </ItemGroup>
 
   <ItemGroup>
