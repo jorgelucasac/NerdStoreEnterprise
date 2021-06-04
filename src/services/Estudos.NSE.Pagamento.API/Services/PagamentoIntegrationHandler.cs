@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Estudos.NSE.Core.DomainObjects;
 using Estudos.NSE.Core.Messages.Integrations;
 using Estudos.NSE.MessageBus;
 using Estudos.NSE.Pagamentos.API.Models;
@@ -27,16 +28,35 @@ namespace Estudos.NSE.Pagamentos.API.Services
             _messageBus.AdvancedBus.Connected += OnConnect;
         }
 
+        private void SetSubscribers()
+        {
+            _messageBus.SubscribeAsync<PedidoCanceladoIntegrationEvent>("PedidoCancelado", async request =>
+                await CancelarPagamento(request));
+
+            _messageBus.SubscribeAsync<PedidoBaixadoEstoqueIntegrationEvent>("PedidoBaixadoEstoque", async request =>
+                await CapturarPagamento(request));
+        }
+
 
         private void OnConnect(object? sender, EventArgs e)
         {
             SetResponder();
+            SetSubscribers();
         }
+       
+
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            SetResponder();
+            SetSubscribers();
+            return Task.CompletedTask;
+        }
+
         private async Task<ResponseMessage> AutorizarPagamento(PedidoIniciadoIntegrationEvent message)
         {
             using var scope = _serviceProvider.CreateScope();
             var pagamentoService = scope.ServiceProvider.GetRequiredService<IPagamentoService>();
-           
+
             var pagamento = new Pagamento
             {
                 PedidoId = message.PedidoId,
@@ -50,11 +70,31 @@ namespace Estudos.NSE.Pagamentos.API.Services
 
             return responseMessage;
         }
-
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        private async Task CancelarPagamento(PedidoCanceladoIntegrationEvent message)
         {
-            SetResponder();
-            return Task.CompletedTask;
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var pagamentoService = scope.ServiceProvider.GetRequiredService<IPagamentoService>();
+
+                var response = await pagamentoService.CancelarPagamento(message.PedidoId);
+
+                if (!response.ValidationResult.IsValid)
+                    throw new DomainException($"Falha ao cancelar pagamento do pedido {message.PedidoId}");
+            }
+        }
+        private async Task CapturarPagamento(PedidoBaixadoEstoqueIntegrationEvent message)
+        {
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var pagamentoService = scope.ServiceProvider.GetRequiredService<IPagamentoService>();
+
+                var response = await pagamentoService.CapturarPagamento(message.PedidoId);
+
+                if (!response.ValidationResult.IsValid)
+                    throw new DomainException($"Falha ao capturar pagamento do pedido {message.PedidoId}");
+
+                await _messageBus.PublishAsync(new PedidoPagoIntegrationEvent(message.ClienteId, message.PedidoId));
+            }
         }
     }
 }

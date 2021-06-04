@@ -91,5 +91,15 @@ namespace Estudos.NSE.Pedidos.Domain.Pedidos
             ValorTotal = valor < 0 ? 0 : valor;
             Desconto = desconto;
         }
+
+        public void CancelarPedido()
+        {
+            PedidoStatus = PedidoStatus.Cancelado;
+        }
+
+        public void FinalizarPedido()
+        {
+            PedidoStatus = PedidoStatus.Pago;
+        }
     }
 }
