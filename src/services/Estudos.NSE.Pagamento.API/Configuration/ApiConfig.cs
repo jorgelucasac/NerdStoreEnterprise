@@ -1,4 +1,5 @@
 ﻿using Estudos.NSE.Pagamentos.API.Data;
+using Estudos.NSE.Pagamentos.API.Facade;
 using Estudos.NSE.WebApi.Core.Identidade;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,6 +18,8 @@ namespace Estudos.NSE.Pagamentos.API.Configuration
                 opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllers();
+
+            services.Configure<PagamentoConfig>(configuration.GetSection("PagamentoConfig"));
 
             services.AddCors(options =>
             {
