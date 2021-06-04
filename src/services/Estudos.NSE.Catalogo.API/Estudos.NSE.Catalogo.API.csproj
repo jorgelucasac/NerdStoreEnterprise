@@ -20,10 +20,12 @@
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Data\Mappings\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\building blocks\Estudos.NSE.Core\Estudos.NSE.Core.csproj" />
+    <ProjectReference Include="..\..\building blocks\Estudos.NSE.MessageBus\Estudos.NSE.MessageBus.csproj" />
     <ProjectReference Include="..\..\building blocks\Estudos.NSE.WebApi.Core\Estudos.NSE.WebApi.Core.csproj" />
   </ItemGroup>
 

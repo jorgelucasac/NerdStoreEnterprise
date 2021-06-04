@@ -40,6 +40,8 @@ namespace Estudos.NSE.Catalogo.API
             services.RegisterServices();
 
             services.AddJwtConfiguration(Configuration);
+            
+            services.AddMessageBusConfiguration(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
