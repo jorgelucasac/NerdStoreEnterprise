@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Dapper;
 using Estudos.NSE.Catalogo.API.Models;
 using Estudos.NSE.Core.Data;
 using Microsoft.EntityFrameworkCore;
@@ -20,9 +21,34 @@ namespace Estudos.NSE.Catalogo.API.Data
 
         public IUnitOfWork UnitOfWork => _context;
 
-        public async Task<IEnumerable<Produto>> ObterTodos()
+        
+
+        public async Task<PagedResult<Produto>> ObterTodos(int pageSize, int pageIndex, string query = null)
         {
-            return await _context.Produto.AsNoTracking().ToListAsync();
+            var qtdRegistrosPular = pageSize * (pageIndex - 1); //reduz um pq as págins no banco começam de 0
+            var sql = @$"SELECT * FROM Produto 
+                      WHERE (@Nome IS NULL OR Nome LIKE '%' + @Nome + '%') 
+                      ORDER BY [Nome] 
+                      OFFSET {qtdRegistrosPular} ROWS 
+                      FETCH NEXT {pageSize} ROWS ONLY; 
+                      SELECT COUNT(Id) FROM Produto 
+                      WHERE (@Nome IS NULL OR Nome LIKE '%' + @Nome + '%')";
+
+
+            var multi = await _context.Database.GetDbConnection()
+                .QueryMultipleAsync(sql, new { Nome = query });
+
+            var produtos = multi.Read<Produto>();
+            var total = multi.Read<int>().FirstOrDefault();
+
+            return new PagedResult<Produto>()
+            {
+                List = produtos,
+                TotalResults = total,
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                Query = query
+            };
         }
 
         public async Task<Produto> ObterPorId(Guid id)
