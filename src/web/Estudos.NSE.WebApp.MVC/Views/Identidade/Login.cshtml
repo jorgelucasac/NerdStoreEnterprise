@@ -1,4 +1,5 @@
-﻿@model Estudos.NSE.WebApp.MVC.Models.UsuarioLogin
+﻿@using Estudos.NSE.WebApp.MVC.Extensions
+@model Estudos.NSE.WebApp.MVC.Models.UsuarioLogin
 
 @{
     ViewData["Title"] = "Log in";
@@ -13,7 +14,7 @@
 
         <div class="card-body">
             <h4 class="card-title mb-4">Seja bem vindo!</h4>
-            <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+            <form asp-route-returnurl="@ViewData.GetReturnUrl()" method="post">
                 <div class="form-group">
                     <label asp-for="Email"></label>
                     <input asp-for="Email" class="form-control" />
