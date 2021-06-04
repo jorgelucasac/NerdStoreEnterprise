@@ -12,6 +12,7 @@ namespace Estudos.NSE.Pedidos.API.Application.Queries
     {
         Task<PedidoDto> ObterUltimoPedido(Guid clienteId);
         Task<IEnumerable<PedidoDto>> ObterListaPorClienteId(Guid clienteId);
+        Task<PedidoDto> ObterPedidosAutorizados();
     }
 
     public class PedidoQueries : IPedidoQueries
@@ -45,6 +46,37 @@ namespace Estudos.NSE.Pedidos.API.Application.Queries
             var pedidos = await _pedidoRepository.ObterListaPorClienteId(clienteId);
 
             return pedidos.Select(PedidoDto.ParaPedidoDto);
+        }
+
+        public async Task<PedidoDto> ObterPedidosAutorizados()
+        {
+            // Correção para pegar todos os itens do pedido e ordernar pelo pedido mais antigo
+            const string sql = @"SELECT 
+                                P.ID as 'PedidoId', P.ID, P.CLIENTEID, 
+                                PI.ID as 'PedidoItemId', PI.ID, PI.PRODUTOID, PI.QUANTIDADE 
+                                FROM PEDIDO P 
+                                INNER JOIN PEDIDOITEM PI ON P.ID = PI.PEDIDOID 
+                                WHERE P.PEDIDOSTATUS = 1                                
+                                ORDER BY P.DATACADASTRO";
+
+            // Utilizacao do lookup para manter o estado a cada ciclo de registro retornado
+            var lookup = new Dictionary<Guid, PedidoDto>();
+
+            await _pedidoRepository.ObterConexao().QueryAsync<PedidoDto, PedidoItemDto, PedidoDto>(sql,
+                (p, pi) =>
+                {
+                    if (!lookup.TryGetValue(p.Id, out var pedidoDto))
+                        lookup.Add(p.Id, pedidoDto = p);
+
+                    pedidoDto.PedidoItems ??= new List<PedidoItemDto>();
+                    pedidoDto.PedidoItems.Add(pi);
+
+                    return pedidoDto;
+
+                }, splitOn: "PedidoId,PedidoItemId");
+
+            // Obtendo dados o lookup
+            return lookup.Values.OrderBy(p => p.Data).FirstOrDefault();
         }
 
         private static PedidoDto MapearPedido(dynamic result)
