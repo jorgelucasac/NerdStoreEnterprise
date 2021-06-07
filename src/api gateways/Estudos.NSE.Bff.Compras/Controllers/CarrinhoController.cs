@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Estudos.NSE.Bff.Compras.Models;
 using Estudos.NSE.Bff.Compras.Services;
+using Estudos.NSE.Bff.Compras.Services.gRPC;
 using Estudos.NSE.WebApi.Core.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,23 +15,25 @@ namespace Estudos.NSE.Bff.Compras.Controllers
     public class CarrinhoController : MainController
     {
         private readonly ICarrinhoService _carrinhoService;
+        private readonly ICarrinhoGrpcService _carrinhoGrpcService;
         private readonly ICatalogoService _catalogoService;
         private readonly IPedidoService _pedidoService;
 
         public CarrinhoController(
             ICarrinhoService carrinhoService,
-            ICatalogoService catalogoService, IPedidoService pedidoService)
+            ICatalogoService catalogoService, IPedidoService pedidoService, ICarrinhoGrpcService carrinhoGrpcService)
         {
             _carrinhoService = carrinhoService;
             _catalogoService = catalogoService;
             _pedidoService = pedidoService;
+            _carrinhoGrpcService = carrinhoGrpcService;
         }
 
         [HttpGet]
         [Route("carrinho")]
         public async Task<IActionResult> Index()
         {
-            return CustomResponse(await _carrinhoService.ObterCarrinho());
+            return CustomResponse(await _carrinhoGrpcService.ObterCarrinho());
         }
 
         [HttpGet]

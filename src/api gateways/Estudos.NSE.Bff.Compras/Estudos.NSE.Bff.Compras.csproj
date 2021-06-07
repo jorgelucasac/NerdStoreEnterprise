@@ -9,6 +9,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.4.1" />
+
+    <PackageReference Include="Google.Protobuf" Version="3.12.4" />
+    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.30.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.31.0" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,5 +21,12 @@
     <ProjectReference Include="..\..\building blocks\Estudos.NSE.WebApi.Core\Estudos.NSE.WebApi.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Protobuf Include="..\..\services\Estudos.NSE.Carrinho.API\Protos\carrinho.proto" GrpcServices="Client" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\gRPC\" />
+  </ItemGroup>
 
 </Project>

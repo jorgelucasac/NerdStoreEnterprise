@@ -38,6 +38,8 @@ namespace Estudos.NSE.Bff.Compras
             services.RegisterServices();
 
             services.AddMessageBusConfiguration(Configuration);
+
+            services.ConfigureGrpcServices(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
