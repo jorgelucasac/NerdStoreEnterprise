@@ -124,7 +124,7 @@ namespace Estudos.NSE.Identidade.API.Controllers
             //a partir de que horas o token é válido
             claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow.AddSeconds(3)).ToString()));
             //até quando o token é válido
-            claims.Add(new Claim(JwtRegisteredClaimNames.Exp, ToUnixEpochDate(DateTime.UtcNow.AddHours(_appSettings.ExpiracaoHoras)).ToString()));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Exp, ToUnixEpochDate(DateTime.UtcNow.AddHours(1)).ToString()));
 
             roles.ToList().ForEach(r => claims.Add(new Claim("role", r)));
 
@@ -159,7 +159,7 @@ namespace Estudos.NSE.Identidade.API.Controllers
             return new UsuarioRespostaLogin
             {
                 AccessToken = encodedToken,
-                ExpiresIn = TimeSpan.FromHours(_appSettings.ExpiracaoHoras).TotalSeconds,
+                ExpiresIn = TimeSpan.FromHours(1).TotalSeconds,
                 UsuarioToken = new UsuarioToken
                 {
                     Id = user.Id,

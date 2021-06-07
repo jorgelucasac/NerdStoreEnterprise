@@ -42,14 +42,6 @@ namespace Estudos.NSE.Identidade.API.Configuration
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-
-            #region JWT
-
-            services.AddJwtConfiguration(configuration);
-
-            #endregion
-
-
         }
 
     }

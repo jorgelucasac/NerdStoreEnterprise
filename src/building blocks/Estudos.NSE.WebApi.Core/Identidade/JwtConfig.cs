@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using NetDevPack.Security.JwtExtensions;
 
 namespace Estudos.NSE.WebApi.Core.Identidade
 {
@@ -16,7 +17,8 @@ namespace Estudos.NSE.WebApi.Core.Identidade
             services.Configure<AppSettings>(appSettingsSection);
 
             var appSettings = appSettingsSection.Get<AppSettings>();
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+
+            //var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
             //seta o tipo de altenticação 
             services.AddAuthentication(opt =>
@@ -28,23 +30,11 @@ namespace Estudos.NSE.WebApi.Core.Identidade
             {
                 bearerOptions.RequireHttpsMetadata = true;
                 bearerOptions.SaveToken = true;
+                //validação assimétrica do token
+                bearerOptions.SetJwksOptions(new JwkOptions(appSettings.AutenticacaoJwksUrl));
 
-                //parametros de validação do token
-                bearerOptions.TokenValidationParameters = new TokenValidationParameters
-                {
-                    //validar a assinatura do token?
-                    ValidateIssuerSigningKey = true,
-                    //chave de criptografia
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    //validar o emisor?
-                    ValidateIssuer = true,
-                    //validar os dominios onde o token é válido?
-                    ValidateAudience = true,
-                    //seta o doimio onde o token é valido
-                    ValidAudience = appSettings.ValidoEm,
-                    //seta o emissor
-                    ValidIssuer = appSettings.Emissor
-                };
+                //parametros de validação simetrica do token
+                //bearerOptions.TokenValidationParameters = ParametrosChaveSimetrica(null, string.Empty, string.Empty);
             });
 
         }
@@ -53,6 +43,25 @@ namespace Estudos.NSE.WebApi.Core.Identidade
         {
             app.UseAuthentication();
             app.UseAuthorization();
+        }
+
+        private static TokenValidationParameters ParametrosChaveSimetrica(byte[] key, string validoEm, string emissor)
+        {
+            return new TokenValidationParameters
+            {
+                //validar a assinatura do token?
+                ValidateIssuerSigningKey = true,
+                //chave de criptografia
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                //validar o emisor?
+                ValidateIssuer = true,
+                //validar os dominios onde o token é válido?
+                ValidateAudience = true,
+                //seta o doimio onde o token é valido
+                ValidAudience = validoEm,
+                //seta o emissor
+                ValidIssuer = emissor
+            };
         }
     }
 }
