@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Estudos.NSE.Identidade.API.Models
@@ -41,6 +42,7 @@ namespace Estudos.NSE.Identidade.API.Models
         public string AccessToken { get; set; }
         public double ExpiresIn { get; set; }
         public UsuarioToken UsuarioToken { get; set; }
+        public Guid RefreshToken { get; set; }
     }
 
     public class UsuarioToken

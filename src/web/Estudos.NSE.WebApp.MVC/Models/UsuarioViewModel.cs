@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Estudos.NSE.Core.Communication;
@@ -31,7 +32,7 @@ namespace Estudos.NSE.WebApp.MVC.Models
         public string SenhaConfirmacao { get; set; }
     }
 
-    
+
 
     public class UsuarioLogin
     {
@@ -49,6 +50,7 @@ namespace Estudos.NSE.WebApp.MVC.Models
         public string AccessToken { get; set; }
         public double ExpiresIn { get; set; }
         public UsuarioToken UsuarioToken { get; set; }
+        public string RefreshToken { get; set; }
         public ResponseResult ResponseResult { get; set; }
     }
 

@@ -14,6 +14,7 @@ namespace Estudos.NSE.Identidade.API.Configuration
     {
         public static void AddIdentityConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
+            services.Configure<AppTokenSettings>(configuration.GetSection("AppTokenSettings"));
             services.AddJwksManager(opt =>
             {
                 opt.Algorithm = Algorithm.ES256;

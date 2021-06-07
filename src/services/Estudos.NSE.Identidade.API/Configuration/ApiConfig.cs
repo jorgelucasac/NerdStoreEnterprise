@@ -1,4 +1,5 @@
-﻿using Estudos.NSE.WebApi.Core.Identidade;
+﻿using Estudos.NSE.Identidade.API.Services;
+using Estudos.NSE.WebApi.Core.Identidade;
 using Estudos.NSE.WebApi.Core.Usuario;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,6 +15,7 @@ namespace Estudos.NSE.Identidade.API.Configuration
         {
             services.AddControllers();
             services.AddScoped<IAspNetUser, AspNetUser>();
+            services.AddScoped<AuthenticationService>();
 
         }
 
