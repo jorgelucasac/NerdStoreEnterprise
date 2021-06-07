@@ -10,10 +10,12 @@ using Estudos.NSE.Identidade.API.Models;
 using Estudos.NSE.MessageBus;
 using Estudos.NSE.WebApi.Core.Controllers;
 using Estudos.NSE.WebApi.Core.Identidade;
+using Estudos.NSE.WebApi.Core.Usuario;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using NetDevPack.Security.JwtSigningCredentials.Interfaces;
 
 namespace Estudos.NSE.Identidade.API.Controllers
 {
@@ -23,15 +25,22 @@ namespace Estudos.NSE.Identidade.API.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly AppSettings _appSettings;
+        private readonly IAspNetUser _aspNetUser;
+        private readonly IJsonWebKeySetService _jsonWebKeySetService;
         private readonly IMessageBus _messageBus;
 
         public AuthController(SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
-            IOptions<AppSettings> appSettings, IMessageBus messageBus)
+            IOptions<AppSettings> appSettings,
+            IMessageBus messageBus,
+            IAspNetUser aspNetUser,
+            IJsonWebKeySetService jsonWebKeySetService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _messageBus = messageBus;
+            _aspNetUser = aspNetUser;
+            _jsonWebKeySetService = jsonWebKeySetService;
             _appSettings = appSettings.Value;
         }
 
@@ -128,14 +137,18 @@ namespace Estudos.NSE.Identidade.API.Controllers
         private string CodificarToken(ClaimsIdentity identityClaims)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+
+            var schema = _aspNetUser.ObterHttpContext().Request.Scheme;
+            var host = _aspNetUser.ObterHttpContext().Request.Host;
+            var currentIssuer = $"{schema}://{host}";
+
+            var key = _jsonWebKeySetService.GetCurrent();
             var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
             {
-                Issuer = _appSettings.Emissor,
-                Audience = _appSettings.ValidoEm,
+                Issuer = currentIssuer,
                 Subject = identityClaims,
-                Expires = DateTime.UtcNow.AddHours(_appSettings.ExpiracaoHoras),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = key
             });
 
             return tokenHandler.WriteToken(token);

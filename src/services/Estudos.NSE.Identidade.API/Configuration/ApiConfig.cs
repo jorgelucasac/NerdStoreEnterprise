@@ -1,8 +1,10 @@
 ﻿using Estudos.NSE.WebApi.Core.Identidade;
+using Estudos.NSE.WebApi.Core.Usuario;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NetDevPack.Security.JwtSigningCredentials.AspNetCore;
 
 namespace Estudos.NSE.Identidade.API.Configuration
 {
@@ -11,6 +13,7 @@ namespace Estudos.NSE.Identidade.API.Configuration
         public static void AddApiConfiguration(this IServiceCollection services)
         {
             services.AddControllers();
+            services.AddScoped<IAspNetUser, AspNetUser>();
 
         }
 
@@ -32,6 +35,7 @@ namespace Estudos.NSE.Identidade.API.Configuration
                 endpoints.MapControllers();
             });
 
+            app.UseJwksDiscovery();
         }
     }
 }
