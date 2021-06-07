@@ -40,7 +40,9 @@ namespace Estudos.NSE.Bff.Compras.Controllers
         [Route("carrinho-quantidade")]
         public async Task<IActionResult> ObterQuantidadeCarrinho()
         {
-            return CustomResponse(await _carrinhoService.ObterQuantidadeCarrinho());
+            //return CustomResponse(await _carrinhoService.ObterQuantidadeCarrinho());
+            var quantidade = await _carrinhoGrpcService.ObterCarrinho();
+            return CustomResponse(quantidade?.Itens.Sum(i => i.Quantidade) ?? 0);
         }
 
         [HttpPost]

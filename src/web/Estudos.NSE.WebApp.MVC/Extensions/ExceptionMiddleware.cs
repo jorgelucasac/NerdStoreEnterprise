@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 using Estudos.NSE.WebApp.MVC.Services;
+using Grpc.Core;
 using Microsoft.AspNetCore.Http;
 using Polly.CircuitBreaker;
 
@@ -25,17 +26,35 @@ namespace Estudos.NSE.WebApp.MVC.Extensions
             }
             catch (CustomHttpRequestException ex)
             {
-                HandleRequestExceptionAsync(httpContext, ex);
+                HandleRequestExceptionAsync(httpContext, ex.StatusCode);
             }
             catch (BrokenCircuitException)
             {
                 HandleCircuitBreakerExceptionAsync(httpContext);
             }
+            catch (RpcException ex)
+            {
+                // 400 Bad Request        INTERNAL
+                //401 Unauthorized      UNAUTHENTICATED
+                //403 Forbidden         PERMISSION_DENIED
+                //404 Not Found         UNIMPLEMENTED
+
+                var statusCode = ex.StatusCode switch
+                {
+                    StatusCode.Internal => HttpStatusCode.BadRequest,
+                    StatusCode.Unauthenticated => HttpStatusCode.Unauthorized,
+                    StatusCode.PermissionDenied => HttpStatusCode.Forbidden,
+                    StatusCode.Unimplemented => HttpStatusCode.NotFound,
+                    _ => HttpStatusCode.InternalServerError
+                };
+
+                HandleRequestExceptionAsync(httpContext, statusCode);
+            }
         }
 
-        private static void HandleRequestExceptionAsync(HttpContext context, CustomHttpRequestException httpRequestException)
+        private static void HandleRequestExceptionAsync(HttpContext context, HttpStatusCode statusCode)
         {
-            if (httpRequestException.StatusCode == HttpStatusCode.Unauthorized)
+            if (statusCode == HttpStatusCode.Unauthorized)
             {
                 if (context.User.Identity.IsAuthenticated && _autenticacaoService.TokenExpirado())
                 {
@@ -51,7 +70,7 @@ namespace Estudos.NSE.WebApp.MVC.Extensions
                 return;
             }
 
-            context.Response.StatusCode = (int)httpRequestException.StatusCode;
+            context.Response.StatusCode = (int)statusCode;
         }
 
         private static void HandleCircuitBreakerExceptionAsync(HttpContext context)
