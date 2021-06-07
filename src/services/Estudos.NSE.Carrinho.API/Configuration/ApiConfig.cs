@@ -1,4 +1,5 @@
 ﻿using Estudos.NSE.Carrinho.API.Data;
+using Estudos.NSE.Carrinho.API.Services.gRPC;
 using Estudos.NSE.WebApi.Core.Identidade;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,6 +18,8 @@ namespace Estudos.NSE.Carrinho.API.Configuration
                 opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllers();
+
+            services.AddGrpc();
 
             services.AddCors(options =>
             {
@@ -49,6 +52,7 @@ namespace Estudos.NSE.Carrinho.API.Configuration
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapGrpcService<CarrinhoGrpcService>().RequireCors("Total");
             });
         }
     }
