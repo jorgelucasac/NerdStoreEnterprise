@@ -12,7 +12,7 @@ namespace Estudos.NSE.WebApp.MVC.Configuration
                 .AddCookie(opt =>
                 {
                     opt.LoginPath = "/login";
-                    opt.AccessDeniedPath = "/acesso-negado";
+                    opt.AccessDeniedPath = "/erro/403";
                 });
         }
 

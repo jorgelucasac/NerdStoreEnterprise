@@ -16,5 +16,6 @@ namespace Estudos.NSE.WebApi.Core.Usuario
         public bool PossuiRole(string[] roles);
         IEnumerable<Claim> ObterClaims();
         HttpContext ObterHttpContext();
+        string ObterUserRefreshToken();
     }
 }
