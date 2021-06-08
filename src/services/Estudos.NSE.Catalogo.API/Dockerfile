@@ -8,9 +8,10 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["./services/Estudos.NSE.Catalogo.API/Estudos.NSE.Catalogo.API.csproj", "services/Estudos.NSE.Catalogo.API/"]
-COPY ["./building blocks/Estudos.NSE.Core/Estudos.NSE.Core.csproj", "building blocks/Estudos.NSE.WebAPI.Core/"]
-COPY ["./building blocks/Estudos.NSE.Core/Estudos.NSE.Core.csproj", "building blocks/Estudos.NSE.WebAPI.Core/"]
+COPY ["./building blocks/Estudos.NSE.Core/Estudos.NSE.Core.csproj", "building blocks/Estudos.NSE.Core/"]
+COPY ["./building blocks/Estudos.NSE.WebApi.Core/Estudos.NSE.WebApi.Core.csproj", "building blocks/Estudos.NSE.WebAPI.Core/"]
 COPY ["./building blocks/Estudos.NSE.MessageBus/Estudos.NSE.MessageBus.csproj", "building blocks/Estudos.NSE.MessageBus/"]
+
 RUN dotnet restore "services/Estudos.NSE.Catalogo.API/Estudos.NSE.Catalogo.API.csproj"
 COPY . .
 WORKDIR "services/Estudos.NSE.Catalogo.API"

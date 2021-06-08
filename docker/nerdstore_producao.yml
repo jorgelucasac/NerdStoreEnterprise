@@ -24,7 +24,6 @@ services:
       SA_PASSWORD: "MeuDB@123"
       ACCEPT_EULA: "Y"
 
-
   web-mvc:
     image: estudos-nerdstore-web-mvc-ecommerce:latest
     container_name: estudos-nerdstore-web-mvc-ecommerce
@@ -38,7 +37,9 @@ services:
       - ASPNETCORE_URLS=http://*:5001
     depends_on:
       - api-catalogo
-
+      - api-identidade
+      - api-cliente
+      - api-bff-compras
 
   api-catalogo: 
     image: estudos-nerdstore-api-catalogo:latest
@@ -51,3 +52,104 @@ services:
       - ASPNETCORE_URLS=http://*:5301
     depends_on:
       - rabbitmq
+
+  api-identidade:
+    image: estudos-nerdstore-api-identidade:latest
+    container_name: estudos-nerdstore-api-identidade    
+    build: 
+      context: ../src
+      dockerfile: ./services/Estudos.NSE.Identidade.API/Dockerfile  
+    environment: 
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://*:5101
+    depends_on:
+      - rabbitmq
+      - sql-server
+
+  api-carrinho:
+    image: estudos-nerdstore-api-carrinho:latest
+    container_name: estudos-nerdstore-api-carrinho
+    build: 
+      context: ../src
+      dockerfile: ./services/Estudos.NSE.Carrinho.API/Dockerfile      
+    environment: 
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://*:5201
+    depends_on:
+      - rabbitmq
+      - api-identidade
+      - sql-server         
+
+  api-catalogo:
+    image: estudos-nerdstore-api-catalogo:latest
+    container_name: estudos-nerdstore-api-catalogo
+    build: 
+      context: ../src
+      dockerfile: ./services/Estudos.NSE.Catalogo.API/Dockerfile
+    environment: 
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://*:5301
+    depends_on:
+      - rabbitmq
+      - sql-server
+
+  api-cliente:
+    image: estudos-nerdstore-api-cliente:latest
+    container_name: estudos-nerdstore-api-cliente    
+    build: 
+      context: ../src
+      dockerfile: ./services/Estudos.NSE.Cliente.API/Dockerfile
+    environment: 
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://*:5401
+    depends_on:
+      - rabbitmq
+      - api-identidade
+      - sql-server  
+
+  api-bff-compras:
+    image: estudos-nerdstore-api-bff-compras:latest
+    container_name: estudos-nerdstore-api-bff-compras
+    build: 
+      context: ../src
+      dockerfile: ./api gateways/Estudos.NSE.Bff.Compras/Dockerfile  
+    environment: 
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://*:5501
+    depends_on:
+      - rabbitmq
+      - api-identidade
+      - api-carrinho
+      - api-pagamento
+      - api-pedido
+            
+  api-pagamento:
+    image: estudos-nerdstore-api-pagamento:latest
+    container_name: estudos-nerdstore-api-pagamento    
+    build: 
+      context: ../src
+      dockerfile: ./services/Estudos.NSE.Pagamento.API/Dockerfile
+    environment: 
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://*:5601
+    depends_on:
+      - rabbitmq
+      - api-identidade
+      - api-pedido
+      - sql-server
+            
+  api-pedido:
+    image: estudos-nerdstore-api-pedido:latest
+    container_name: estudos-nerdstore-api-pedido    
+    build: 
+      context: ../src
+      dockerfile: ./services/Estudos.NSE.Pedido.API/Dockerfile 
+    environment: 
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://*:5701
+    depends_on:
+      - rabbitmq
+      - sql-server
+      - api-identidade                    
+
+   

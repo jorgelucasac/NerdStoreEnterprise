@@ -7,20 +7,20 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["./services/Estudos.NSE.Cliente.API/Estudos.NSE.Cliente.API.csproj", "services/Estudos.NSE.Cliente.API/"]
+COPY ["./api gateways/Estudos.NSE.Bff.Compras/Estudos.NSE.Bff.Compras.csproj", "api gateways/Estudos.NSE.Bff.Compras/"]
 COPY ["./building blocks/Estudos.NSE.Core/Estudos.NSE.Core.csproj", "building blocks/Estudos.NSE.Core/"]
 COPY ["./building blocks/Estudos.NSE.WebApi.Core/Estudos.NSE.WebApi.Core.csproj", "building blocks/Estudos.NSE.WebAPI.Core/"]
 COPY ["./building blocks/Estudos.NSE.MessageBus/Estudos.NSE.MessageBus.csproj", "building blocks/Estudos.NSE.MessageBus/"]
 
-RUN dotnet restore "services/Estudos.NSE.Cliente.API/Estudos.NSE.Cliente.API.csproj"
+RUN dotnet restore "api gateways/Estudos.NSE.Bff.Compras/Estudos.NSE.Bff.Compras.csproj"
 COPY . .
-WORKDIR "services/Estudos.NSE.Cliente.API"
-RUN dotnet build "Estudos.NSE.Cliente.API.csproj" -c Release -o /app/build
+WORKDIR "api gateways/Estudos.NSE.Bff.Compras"
+RUN dotnet build "Estudos.NSE.Bff.Compras.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Estudos.NSE.Cliente.API.csproj" -c Release -o /app/publish
+RUN dotnet publish "Estudos.NSE.Bff.Compras.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Estudos.NSE.Clientes.API.dll"]
+ENTRYPOINT ["dotnet", "Estudos.NSE.Bff.Compras.dll"]

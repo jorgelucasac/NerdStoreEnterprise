@@ -7,10 +7,14 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["src/services/Estudos.NSE.Carrinho.API/Estudos.NSE.Carrinho.API.csproj", "src/services/Estudos.NSE.Carrinho.API/"]
-RUN dotnet restore "src/services/Estudos.NSE.Carrinho.API/Estudos.NSE.Carrinho.API.csproj"
+COPY ["./services/Estudos.NSE.Carrinho.API/Estudos.NSE.Carrinho.API.csproj", "services/Estudos.NSE.Carrinho.API/"]
+COPY ["./building blocks/Estudos.NSE.Core/Estudos.NSE.Core.csproj", "building blocks/Estudos.NSE.Core/"]
+COPY ["./building blocks/Estudos.NSE.WebApi.Core/Estudos.NSE.WebApi.Core.csproj", "building blocks/Estudos.NSE.WebAPI.Core/"]
+COPY ["./building blocks/Estudos.NSE.MessageBus/Estudos.NSE.MessageBus.csproj", "building blocks/Estudos.NSE.MessageBus/"]
+
+RUN dotnet restore "services/Estudos.NSE.Carrinho.API/Estudos.NSE.Carrinho.API.csproj"
 COPY . .
-WORKDIR "/src/src/services/Estudos.NSE.Carrinho.API"
+WORKDIR "services/Estudos.NSE.Carrinho.API"
 RUN dotnet build "Estudos.NSE.Carrinho.API.csproj" -c Release -o /app/build
 
 FROM build AS publish

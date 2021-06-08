@@ -28,7 +28,7 @@ namespace Estudos.NSE.WebApi.Core.Identidade
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(bearerOptions =>
             {
-                bearerOptions.RequireHttpsMetadata = true;
+                bearerOptions.RequireHttpsMetadata = false;
                 bearerOptions.SaveToken = true;
                 //validação assimétrica do token
                 bearerOptions.SetJwksOptions(new JwkOptions(appSettings.AutenticacaoJwksUrl));

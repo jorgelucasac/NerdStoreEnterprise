@@ -7,16 +7,20 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["src/services/Estudos.NSE.Pedido.API/Estudos.NSE.Pedido.API.csproj", "src/services/Estudos.NSE.Pedido.API/"]
-RUN dotnet restore "src/services/Estudos.NSE.Pedido.API/Estudos.NSE.Pedido.API.csproj"
+COPY ["./services/Estudos.NSE.Pedido.API/Estudos.NSE.Pedidos.API.csproj", "services/Estudos.NSE.Pedido.API/"]
+COPY ["./building blocks/Estudos.NSE.Core/Estudos.NSE.Core.csproj", "building blocks/Estudos.NSE.Core/"]
+COPY ["./building blocks/Estudos.NSE.WebApi.Core/Estudos.NSE.WebApi.Core.csproj", "building blocks/Estudos.NSE.WebAPI.Core/"]
+COPY ["./building blocks/Estudos.NSE.MessageBus/Estudos.NSE.MessageBus.csproj", "building blocks/Estudos.NSE.MessageBus/"]
+
+RUN dotnet restore "services/Estudos.NSE.Pedido.API/Estudos.NSE.Pedidos.API.csproj"
 COPY . .
-WORKDIR "/src/src/services/Estudos.NSE.Pedido.API"
-RUN dotnet build "Estudos.NSE.Pedido.API.csproj" -c Release -o /app/build
+WORKDIR "services/Estudos.NSE.Pedido.API"
+RUN dotnet build "Estudos.NSE.Pedidos.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Estudos.NSE.Pedido.API.csproj" -c Release -o /app/publish
+RUN dotnet publish "Estudos.NSE.Pedidos.API.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Estudos.NSE.Pedido.API.dll"]
+ENTRYPOINT ["dotnet", "Estudos.NSE.Pedidos.API.dll"]
