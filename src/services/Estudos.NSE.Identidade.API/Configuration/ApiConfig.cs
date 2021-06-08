@@ -14,6 +14,7 @@ namespace Estudos.NSE.Identidade.API.Configuration
         public static void AddApiConfiguration(this IServiceCollection services)
         {
             services.AddControllers();
+            services.AddVersionamento();
             services.AddScoped<IAspNetUser, AspNetUser>();
             services.AddScoped<AuthenticationService>();
 

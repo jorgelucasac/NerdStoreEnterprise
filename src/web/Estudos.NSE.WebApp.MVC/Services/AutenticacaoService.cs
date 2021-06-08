@@ -20,7 +20,7 @@ namespace Estudos.NSE.WebApp.MVC.Services
         private readonly HttpClient _httpClient;
         private readonly IAuthenticationService _authenticationService;
         private readonly IAspNetUser _aspNetUser;
-        private const string Api = "/api/identidade/";
+        private const string Api = "/api/v1/identidade/";
 
         public AutenticacaoService(HttpClient httpClient,
             IOptions<AppSettings> appSettings,

@@ -1,6 +1,7 @@
 using Estudos.NSE.Identidade.API.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -38,9 +39,9 @@ namespace Estudos.NSE.Identidade.API
             services.AddMessageBusConfiguration(Configuration);
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
-            app.UseSwaggerConfiguration();
+            app.UseSwaggerConfiguration(provider);
             app.UseApiConfiguration(env);
         }
     }

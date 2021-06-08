@@ -8,9 +8,10 @@ using Estudos.NSE.WebApi.Core.Controllers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Estudos.NSE.Identidade.API.Controllers
+namespace Estudos.NSE.Identidade.API.V1.Controllers
 {
-    [Route("api/identidade")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/identidade")]
     public class AuthController : MainController
     {
         private readonly AuthenticationService _authenticationService;
