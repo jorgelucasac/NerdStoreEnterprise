@@ -6,7 +6,9 @@ using Estudos.NSE.WebApp.MVC.Services.Handlers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.Extensions.DependencyInjection;
+using Estudos.NSE.WebApi.Core.Extensions;
 using Polly;
+using PollyExtensions = Estudos.NSE.WebApp.MVC.Extensions.PollyExtensions;
 
 namespace Estudos.NSE.WebApp.MVC.Configuration
 {
@@ -24,6 +26,7 @@ namespace Estudos.NSE.WebApp.MVC.Configuration
 
             services.AddHttpClient<IAutenticacaoService, AutenticacaoService>()
                 .AddPolicyHandler(PollyExtensions.EsperarTentar())
+                .AllowSelfSignedCertificate()
                 .AddTransientHttpErrorPolicy(
                     p =>
                         p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
@@ -32,6 +35,7 @@ namespace Estudos.NSE.WebApp.MVC.Configuration
             services.AddHttpClient<ICatalogoService, CatalogoService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                 .AddPolicyHandler(PollyExtensions.EsperarTentar())
+                .AllowSelfSignedCertificate()
                 .AddTransientHttpErrorPolicy(
                     p =>
                         p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
@@ -39,6 +43,7 @@ namespace Estudos.NSE.WebApp.MVC.Configuration
             services.AddHttpClient<IComprasBffService, ComprasBffService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                 .AddPolicyHandler(PollyExtensions.EsperarTentar())
+                .AllowSelfSignedCertificate()
                 .AddTransientHttpErrorPolicy(
                     p =>
                         p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
@@ -46,6 +51,7 @@ namespace Estudos.NSE.WebApp.MVC.Configuration
              services.AddHttpClient<IClienteService, ClienteService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                 .AddPolicyHandler(PollyExtensions.EsperarTentar())
+                .AllowSelfSignedCertificate()
                 .AddTransientHttpErrorPolicy(
                     p =>
                         p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Net.Http;
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -29,6 +30,7 @@ namespace Estudos.NSE.WebApi.Core.Identidade
             }).AddJwtBearer(bearerOptions =>
             {
                 bearerOptions.RequireHttpsMetadata = false;
+                bearerOptions.BackchannelHttpHandler = new HttpClientHandler { ServerCertificateCustomValidationCallback = delegate { return true; } };
                 bearerOptions.SaveToken = true;
                 //validação assimétrica do token
                 bearerOptions.SetJwksOptions(new JwkOptions(appSettings.AutenticacaoJwksUrl));
