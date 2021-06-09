@@ -26,7 +26,7 @@ services:
 
   web-mvc:
     image: estudos-nerdstore-web-mvc-ecommerce:latest
-    container_name: estudos-nerdstore-web-mvc-ecommerce
+    #container_name: estudos-nerdstore-web-mvc-ecommerce
     build:
       context: ../src
       dockerfile: ./web/Estudos.NSE.WebApp.MVC/Dockerfile

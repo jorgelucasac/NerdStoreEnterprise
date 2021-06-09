@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using Estudos.NSE.WebApp.MVC.Extensions;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Localization;
@@ -15,6 +16,12 @@ namespace Estudos.NSE.WebApp.MVC.Configuration
         public static void AddMvcConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddControllersWithViews();
+
+            //salva os tokens válidos para a aplicação
+            //para funcionar o load balance
+            services.AddDataProtection()
+                .PersistKeysToFileSystem(new System.IO.DirectoryInfo(@"/var/data_protection_keys/"))
+                .SetApplicationName("NerdStoreEnterprise");
 
             services.Configure<ForwardedHeadersOptions>(opt =>
             {
